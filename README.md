@@ -4,7 +4,29 @@
 For this course we have to develop an chat that receives and gives out data in real time (you can see the data immediately). To start off with this course, we are given the assignment to start building an chat application together as a team. So that we have a strong base to start off and then we can add our own functionalities to pass this course. This assignment is quite time restricting, because we start off with this project on Monday and the next day (Tuesday) we have to complete the assignment and receive feedback from the teachers.
 
 ## 🤔 Concept
-We have decided to first focus on getting to know socket.io, because it has different kind of events and we are still unfamiliar with the events. So our design will be simple and also we will only be developing 1 page, a really basic chatroom. Where you can chat with multiple users, also the users won't be anonymous, they will be given names. 
+
+## Proof of concept
+What is proof of concept. Proof of concept is an design method where you think about three potential ideas that can be implemented.  In my case I am using this method to create three concept for my real time web application. For Each concept I will make a rough sketch so people can understand my ideas better.  And to visualize them. 
+
+## Idea 1
+For my first idea, I want to use the disney API. With this API i would like to make a multiplayer game where players can guess the disney characters. Before the game begins, the player can make an unique username.  Then every registered players will be directed to a room.  When you get in the room, you will see a picture of a disney character and a chat section. Everyones types their answer in the chat. The player that guesses the correct answer wil get an confetti on his screen and a score. After the celebration. The game continues and generates another picture of a character and so on. 
+
+![Idea 1](readme-images/idea1.png)
+
+### Features
+- Players can have a unique nickname
+- Players can chat with eachother 
+- Players can create nicknames
+- A score board
+- You can see how many players are online
+- A celebration event for the winner
+- Disney characters that are fetched from the Disney API. 
+
+## Idea 2 
+The second idea is..
+
+
+## Idea 3 
 
 ## ✏️ Sketches / design
 
