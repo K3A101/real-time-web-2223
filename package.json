@@ -1,0 +1,25 @@
+{
+  "name": "real-time-web-2223",
+  "version": "1.0.0",
+  "description": "A real time web application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/K3A101/real-time-web-2223.git"
+  },
+  "keywords": [
+    "realtime",
+    "chatroom"
+  ],
+  "author": "Keïsha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/K3A101/real-time-web-2223/issues"
+  },
+  "homepage": "https://github.com/K3A101/real-time-web-2223#readme"
+}
