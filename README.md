@@ -1,32 +1,32 @@
 # Real-Time Web @cmda-minor-web 2022 - 2023
 
 ## 🏫 Course 
-For this course we have to develop an chat that receives and gives out data in real time (you can see the data immediately). To start off with this course, we are given the assignment to start building an chat application together as a team. So that we have a strong base to start off and then we can add our own functionalities to pass this course. This assignment is quite time restricting, because we start off with this project on Monday and the next day (Tuesday) we have to complete the assignment and receive feedback from the teachers.
+Voor deze cursus moeten we een chat ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Om te beginnen met deze cursus krijgen we de opdracht om samen als team aan de slag te gaan met het bouwen van een chatapplicatie. Zodat we een sterke basis hebben om te beginnen en dan kunnen we onze eigen functionaliteiten toevoegen om deze cursus te halen. Deze opdracht is behoorlijk tijdrovend, omdat we met dit project op maandag beginnen en de volgende dag (dinsdag) de opdracht moeten voltooien en feedback van de docenten moeten krijgen.
 
 ## 🤔 Concept
 
 ## Proof of concept
-What is proof of concept. Proof of concept is an design method where you think about three potential ideas that can be implemented.  In my case I am using this method to create three concept for my real time web application. For Each concept I will make a rough sketch so people can understand my ideas better.  And to visualize them. 
+Wat is een proof-of-concept. Proof of concept is een ontwerpmethode waarbij je nadenkt over drie mogelijke ideeën die kunnen worden geïmplementeerd. In mijn geval gebruik ik deze methode om drie concepten te creëren voor mijn real-time webapplicatie te bouwen. Voor elk concept maak ik een ruwe schets zodat mensen mijn ideeën beter kunnen begrijpen. En om ze te visualiseren. 
 
-## Idea 1
-For my first idea, I want to use the disney API. With this API i would like to make a multiplayer game where players can guess the disney characters. Before the game begins, the player can make an unique username.  Then every registered players will be directed to a room.  When you get in the room, you will see a picture of a disney character and a chat section. Everyones types their answer in the chat. The player that guesses the correct answer wil get an confetti on his screen and a score. After the celebration. The game continues and generates another picture of a character and so on. 
+## Idee 1: Guess the character
+Voor mijn eerste idee wil ik de Disney API gebruiken. Met deze API wil ik een multiplayer-game maken waarin spelers de Disney-personages kunnen raden. Voordat het spel begint, kan de speler een unieke gebruikersnaam aanmaken. Vervolgens worden alle geregistreerde spelers naar een kamer geleid. Als je de kamer binnenkomt, zie je een foto van een Disney-personage en een chatgedeelte. Iedereen typt zijn antwoord in de chat. De speler die het juiste antwoord raadt, krijgt een confetti op zijn scherm en een score. Na de viering. Het spel gaat verder en genereert nog een afbeelding van een personage, enzovoort.
 
 ![Idea 1](readme-images/idea1.png)
 
-### Features
-- Players can have a unique nickname
-- Players can chat with eachother 
-- Players can create nicknames
-- A score board
+### Functionaliteiten
+- Spelers kunnen unieke gebruikersnaam maken
+- Spelers kunnen met elkaar communiceren 
+- Je kan zien hoeveel mensen momenteel online is
+- Het spel bevat een score bord
 - You can see how many players are online
-- A celebration event for the winner
-- Disney characters that are fetched from the Disney API. 
+- Eeen evet waar confettis worden gestoten voor de winnaar
+- Disney karakters afbeeldingen worden uit de API gehaald. 
 
-## Idea 2 
-The second idea is..
+## Idee 2: Praten over bepaalde onderwerp
+Het tweede idee is een applicatie waar de gebruiker een thema kan kiezen en alleen over die thema praten. Eeen soort van forum..
 
 
-## Idea 3 
+## Idee 3 
 
 ## ✏️ Sketches / design
 
