@@ -23,23 +23,6 @@ io.on('connection', (socket) =>{
     });
 })
 
-// io.on("connection", (socket) => {
-//     console.log('user connected');
-
-//     socket.on('message', (message) => {
-//         // while (history.length > historySize) {
-//         //   history.shift()
-//         // }
-//         // history.push(message)
-
-//         io.emit('message', message)
-//     })
-
-
-//     socket.on('disconnect', () => {
-//         console.log('user disconnected')
-//     })
-// });
 
 http.listen(port, () => {
     console.log(`Example app listening on  http://localhost:${port}`)
