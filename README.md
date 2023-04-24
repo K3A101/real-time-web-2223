@@ -47,9 +47,162 @@ Hier is de link naar de [documntatie](https://dictionaryapi.dev/).
 ## Idee 3 - Watch together App
 Het laatste concept is een app waar mensen gezamenlijk review kan geven over een boek of film.  Dus mensen kunnen een boek/film kiezen die ze willen beoordelen. En daarna in een forum feedback plaatsen.  Ik heb ook een andere idee een soort van live chat te geven waarmee gebruikers commentaren kan plaatsen terwijl ze  live een fragment bekijk. Denk aan facebook live.
 
+### API - Goodreads API
+
 ---
+# Het concept
+## Dictionary generator chat
+Ik wil voor mij concept een woordenboek generator maken. Dus een groep mensen komen in een chatroom terecht en dan kunnen ze op basis van een woord die ze hebben ingevuld een overzicht maken met woordenboek eigenschappen . De woorden die genereert zijn kun je een woordenlijst maken en iedereen kunnen de woordenlijst downloaden en of bewaren. 
+
+## Functionaliteiten 
+- [] Gebruikers kunnen gebruikersnaam maken
+- [] Gerbruikers komen op een gebruikerslijst komen te staan
+- [] Je kan zien wie online is.
+- [] Gebruikers kunnen met elkaar communiceren in een groupchat.
+- [] Gebruikers kunnen woorden invullen om de beschrijving te genereren
+- [] Moet concrete informatie geven van het woord'
+- [] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
+- [] Gebruikers kunnen in room gaan
+- [] Kijken wie er bijgekomen is in de chat
+- [] Je kan zien welke gebruiker aan het type is
+  
+## Technieken
+- [] De gebruikersnaam pagina verbergen wanneer de gebruiker op de button klikt
+- [] Een overzicht van de woord naast de chat
+- [] Een plek waar je de woord kan invoeren
+- [] Een overzicht lijst met alle gebruikers die nu in de room is
+
+
+## Schetsen
+
+![Idee 2 schets](readme-images/idee-2-schets.jpg)
+![Idee 2 schets](readme-images/concept-wireflow.jpg)
+
+---
+# API
+## Free dictionary API
+Om mijn concept aan de praat te krijgen ga ik de Free API Dictionary Api gebruiken. Hoe de Api werkt is dat het woord die je invult, word dan je endpoint. Verder wordt via de endpoint een array gegeneert met verschillende eigenschappen van het woord. Hieronder is er een voorbeeld van de een woord.
+
+### Eindpont van het woord hello
+`GET https://api.dictionaryapi.dev/api/v2/entries/en/hello`
+
+### De response
+Dit is wat je terugkrijgt vanuit de API. 
+Om de response overzicht te krijgen heb ik insomia.rest gebruikt. 
+![Insomia.rest](readme-images/insomia.rest.png)
+
+```json
+[
+	{
+		"word": "hello",
+		"phonetics": [
+			{
+				"audio": "https://api.dictionaryapi.dev/media/pronunciations/en/hello-au.mp3",
+				"sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=75797336",
+				"license": {
+					"name": "BY-SA 4.0",
+					"url": "https://creativecommons.org/licenses/by-sa/4.0"
+				}
+			},
+			{
+				"text": "/həˈləʊ/",
+				"audio": "https://api.dictionaryapi.dev/media/pronunciations/en/hello-uk.mp3",
+				"sourceUrl": "https://commons.wikimedia.org/w/index.php?curid=9021983",
+				"license": {
+					"name": "BY 3.0 US",
+					"url": "https://creativecommons.org/licenses/by/3.0/us"
+				}
+			},
+			{
+				"text": "/həˈloʊ/",
+				"audio": ""
+			}
+		],
+		"meanings": [
+			{
+				"partOfSpeech": "noun",
+				"definitions": [
+					{
+						"definition": "\"Hello!\" or an equivalent greeting.",
+						"synonyms": [],
+						"antonyms": []
+					}
+				],
+				"synonyms": [
+					"greeting"
+				],
+				"antonyms": []
+			},
+			{
+				"partOfSpeech": "verb",
+				"definitions": [
+					{
+						"definition": "To greet with \"hello\".",
+						"synonyms": [],
+						"antonyms": []
+					}
+				],
+				"synonyms": [],
+				"antonyms": []
+			},
+			{
+				"partOfSpeech": "interjection",
+				"definitions": [
+					{
+						"definition": "A greeting (salutation) said when meeting someone or acknowledging someone’s arrival or presence.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "Hello, everyone."
+					},
+					{
+						"definition": "A greeting used when answering the telephone.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "Hello? How may I help you?"
+					},
+					{
+						"definition": "A call for response if it is not clear if anyone is present or listening, or if a telephone conversation may have been disconnected.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "Hello? Is anyone there?"
+					},
+					{
+						"definition": "Used sarcastically to imply that the person addressed or referred to has done something the speaker or writer considers to be foolish.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "You just tried to start your car with your cell phone. Hello?"
+					},
+					{
+						"definition": "An expression of puzzlement or discovery.",
+						"synonyms": [],
+						"antonyms": [],
+						"example": "Hello! What’s going on here?"
+					}
+				],
+				"synonyms": [],
+				"antonyms": [
+					"bye",
+					"goodbye"
+				]
+			}
+		],
+		"license": {
+			"name": "CC BY-SA 3.0",
+			"url": "https://creativecommons.org/licenses/by-sa/3.0"
+		},
+		"sourceUrls": [
+			"https://en.wiktionary.org/wiki/hello"
+		]
+	}
+]
+```
+
+## Data modeling
+### Versie 1
+![data modeling schets versie 1](readme-images/data-modeling-schets.jpg)
+
 ## Applicatie installatie
-Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen.
+Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen. 
 
 ### Wat heb je nodig:
 - NPM
