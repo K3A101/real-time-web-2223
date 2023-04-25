@@ -3,7 +3,13 @@ const app = express();
 const http = require('http').createServer(app);
 const path = require('path');
 const io = require('socket.io')(http);
+// const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// const axios = require('axios');
 const port = process.env.PORT || 4242
+
+
+// gegevens inladen
+
 
 app.use(express.static(path.resolve('public')));
 
@@ -15,8 +21,21 @@ app.set('view engine', 'ejs');
 let appRoutes = require('./routes/routes');
 app.use('/', appRoutes);
 
-io.on('connection', (socket) =>{
+
+io.on('connection', (socket) => {
+    socket.on('get word', (word) => {
+        io.emit('get word', word);
+        console.log('message' + word);
+    })
+
+    socket.on('wordData', (data) => {
+        io.emit('wordData', data);
+        console.log(data);
+    })
+
+
     console.log('A user connected');
+    console.log(socket.rooms)
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
