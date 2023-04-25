@@ -23,9 +23,9 @@ app.use('/', appRoutes);
 
 
 io.on('connection', (socket) => {
-    socket.on('get word', (word) => {
-        io.emit('get word', word);
-        console.log('message' + word);
+    socket.on('get words', (chat) => {
+        io.emit('get words', chat);
+        // console.log('message' + word);
     })
 
     socket.on('wordData', (data) => {
