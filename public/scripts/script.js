@@ -9,6 +9,7 @@ const createUserBtn = document.querySelector('#create-user-btn');
 const usernameForm = document.querySelector('.username-form');
 const userList =  document.querySelector('#user-online');
 let currentUser;
+socket.emit('get online users')
 
 
 createUserBtn.addEventListener('click', (e) => {
@@ -96,4 +97,21 @@ socket.on('new-user', (username) => {
     const user = document.createElement('li');
     user.innerHTML = `${username}`;
     userList.appendChild(user);
+});
+
+socket.on('get online users', (onlineUsers) => {
+    for (username in onlineUsers) {
+        const user = document.createElement('li');
+        user.innerHTML = `${username}`;
+        userList.appendChild(user);
+    }
+});
+
+socket.on('user has left', (onlineUsers) => {
+    userList.innerHTML = '';
+    for (username in onlineUsers) {
+        const user = document.createElement('li');
+        user.innerHTML = `${username}`;
+        userList.appendChild(user);
+    }
 });

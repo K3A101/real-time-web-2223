@@ -35,7 +35,15 @@ io.on('connection', (socket) => {
 
     socket.on('new-user', (username) => {
         console.log(`${username} has joined the chat`);
+        //Save the username as key to access the user's socket id
+        onlineUsers[username] = socket.id;
+        socket['username'] = username;
         io.emit('new-user', username);
+    })
+
+    socket.on('get online users', () => {
+        //Send over the onlineUsers
+        socket.emit('get online users', onlineUsers);
     })
 
 
@@ -43,6 +51,8 @@ io.on('connection', (socket) => {
     console.log(socket.rooms)
 
     socket.on('disconnect', () => {
+        delete onlineUsers[socket.username]
+        io.emit('user has left', onlineUsers);
         console.log('A user disconnected');
     });
 })
