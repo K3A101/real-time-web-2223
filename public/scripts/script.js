@@ -17,6 +17,7 @@ createUserBtn.addEventListener('click', (e) => {
     const username = usernameInput.value.trim();
     if(username.length > 0) {
         socket.emit('new-user', username);
+        currentUser = username;
         usernameForm.classList.add('hidden');
     }
     
@@ -47,9 +48,10 @@ submitButton.addEventListener('click', (e) => {
             console.log(err)
         })
 
-    if (word) {
+    if (word.length > 0) {
         //Ik maak een array van object aan met de waarde van de username en de message
         const chat = {
+            username: currentUser,
             message: word
         }
         //De chat message event wordt gestuurd met de chat array als parameter
@@ -74,14 +76,16 @@ function displayData(data) {
     document.body.appendChild(pElement);
 }
 
-socket.on('chat message', (wordInput) => {
+socket.on('chat message', (chat) => {
 
     const speechBubble = document.createElement('li');
-    speechBubble.innerHTML = `${wordInput.message}`;
+    speechBubble.innerHTML = `<span>${chat.username}</span>:${chat.message}`;
+    console.log(`${chat.username}: ${chat.message}`);
 
     chatContainer.appendChild(speechBubble);
     // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
-    wordInput.scrollTop = wordInput.scrollHeight;
+    chat.scrollTop = chat.scrollHeight;
+    console.log()
 
     // In your own perspectief staat de chat message in de rechterkant van de chat
     

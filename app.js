@@ -6,7 +6,7 @@ const io = require('socket.io')(http);
 // const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 // const axios = require('axios');
 const port = process.env.PORT || 4242
-
+let onlineUsers = {};
 
 // gegevens inladen
 
@@ -25,7 +25,7 @@ app.use('/', appRoutes);
 io.on('connection', (socket) => {
     socket.on('chat message', (chat) => {
         io.emit('chat message', chat);
-        // console.log('message' + word);
+        console.log(`${chat.username}: ${chat.message}`);
     })
 
     socket.on('wordData', (data) => {
