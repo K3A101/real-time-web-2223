@@ -3,7 +3,27 @@ const socket = io();
 
 const wordInput = document.querySelector('#word-input');
 const submitButton = document.querySelector('#submit-button');
-const ul = document.querySelector('ul');
+const chatContainer = document.querySelector('ul');
+const chatPage = document.querySelector('.chat-page');
+const createUserBtn = document.querySelector('#create-user-btn');
+const usernameForm = document.querySelector('.username-form');
+const userList =  document.querySelector('#user-online');
+let currentUser;
+
+
+createUserBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value.trim();
+    if(username.length > 0) {
+        socket.emit('new-user', username);
+        usernameForm.classList.add('hidden');
+    }
+    
+    console.log('New user created')
+   
+});
+
 
 
 
@@ -11,8 +31,6 @@ wordInput.addEventListener('input', (e) => {
     e.preventDefault();
     console.log(wordInput.value);
 })
-
-
 
 
 submitButton.addEventListener('click', (e) => {
@@ -36,7 +54,7 @@ submitButton.addEventListener('click', (e) => {
         }
         //De chat message event wordt gestuurd met de chat array als parameter
         //De chat array bevat de username en de message
-        socket.emit('get words', chat); //verstuurd een chat message  event naar de server met de chat object array als data
+        socket.emit('chat message', chat); //verstuurd een chat message  event naar de server met de chat object array als data
         word = '';
     }
 })
@@ -56,19 +74,22 @@ function displayData(data) {
     document.body.appendChild(pElement);
 }
 
-socket.on('get words', (wordInput) => {
+socket.on('chat message', (wordInput) => {
 
     const speechBubble = document.createElement('li');
     speechBubble.innerHTML = `${wordInput.message}`;
-    speechBubble.setAttribute('class', 'talk-bubble tri-right border round btm-left-in');
 
-    ul.appendChild(speechBubble);
+    chatContainer.appendChild(speechBubble);
     // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
     wordInput.scrollTop = wordInput.scrollHeight;
 
     // In your own perspectief staat de chat message in de rechterkant van de chat
     
-
 })
 
-
+socket.on('new-user', (username) => {
+    console.log(username + ' has joined the chat');
+    const user = document.createElement('li');
+    user.innerHTML = `${username}`;
+    userList.appendChild(user);
+});

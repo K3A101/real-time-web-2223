@@ -12,17 +12,22 @@
     <main>
       <section>
         
-        <form id="form">
-          <!-- <label for="input">eNTER</label>
-          <input id="input" type="text" autocomplete="off">
-          <button id="input-button">Send</button> -->
+        <form class="username-form">
+        
 
-          <!-- <h2>Enter your username:</h2>
+          <h2>Enter your username:</h2>
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" value=""> -->
+          <input type="text" id="username-input" name="username" placeholder="Username" value="" autocomplete="off">
+          <button id="create-user-btn">Join Chat</button>
+          
         </form>
       </section>
       <section>
+        <h2>Online Users </h2>
+        <ul id="user-online"></ul>
+      </section>
+      <section>
+        <button id="back-btn">Go Back</button>
         <ul id="words"></ul>
         <form>
           <label for="word-input">Enter a word</label>

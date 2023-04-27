@@ -15,7 +15,7 @@ app.use(express.static(path.resolve('public')));
 
 // Set view engine
 app.set("views", path.join(__dirname, "views"));
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs'); 
 
 // Routing file
 let appRoutes = require('./routes/routes');
@@ -23,14 +23,19 @@ app.use('/', appRoutes);
 
 
 io.on('connection', (socket) => {
-    socket.on('get words', (chat) => {
-        io.emit('get words', chat);
+    socket.on('chat message', (chat) => {
+        io.emit('chat message', chat);
         // console.log('message' + word);
     })
 
     socket.on('wordData', (data) => {
         io.emit('wordData', data);
         console.log(data);
+    })
+
+    socket.on('new-user', (username) => {
+        console.log(`${username} has joined the chat`);
+        io.emit('new-user', username);
     })
 
 
