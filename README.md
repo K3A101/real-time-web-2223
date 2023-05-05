@@ -2,6 +2,36 @@
 
 ## 🏫 Course 
 Voor deze cursus moeten we een chat ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Om te beginnen met deze cursus krijgen we de opdracht om samen als team aan de slag te gaan met het bouwen van een chatapplicatie. Zodat we een sterke basis hebben om te beginnen en dan kunnen we onze eigen functionaliteiten toevoegen om deze cursus te halen. Deze opdracht is behoorlijk tijdrovend, omdat we met dit project op maandag beginnen en de volgende dag (dinsdag) de opdracht moeten voltooien en feedback van de docenten moeten krijgen.
+## Applicatie installatie
+Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen. 
+
+### Wat heb je nodig:
+- NPM
+- node
+- Express
+- socket.io
+- Nodemon
+- ejs
+- adaptable.io
+
+### Clone repository
+
+    git clone https://github.com/K3A101/css-to-the-rescue-2223.git
+
+### NPM Installeren
+
+    npm install
+
+### Applicatie starten in developement
+
+    npm run dev
+
+### Applicatie te starten
+
+    npm start
+
+### Applicatie deployen
+Om de applicatie live te zetten heb ik adaptable.io hosting platform gebruikt. Ik heb deze gebruikt omdat het ondersteund websocket. Je kan ook andere hosting platform gebruiken zoals railway.
 
 ## 🤔 Concept
 
@@ -55,15 +85,15 @@ Het laatste concept is een app waar mensen gezamenlijk review kan geven over een
 Ik wil voor mij concept een woordenboek generator maken. Dus een groep mensen komen in een chatroom terecht en dan kunnen ze op basis van een woord die ze hebben ingevuld een overzicht maken met woordenboek eigenschappen . De woorden die genereert zijn kun je een woordenlijst maken en iedereen kunnen de woordenlijst downloaden en of bewaren. 
 
 ## Functionaliteiten 
-- [] Gebruikers kunnen gebruikersnaam maken
-- [] Gerbruikers komen op een gebruikerslijst komen te staan
-- [] Je kan zien wie online is.
-- [] Gebruikers kunnen met elkaar communiceren in een groupchat.
-- [] Gebruikers kunnen woorden invullen om de beschrijving te genereren
-- [] Moet concrete informatie geven van het woord'
+- [x] Gebruikers kunnen gebruikersnaam maken
+- [x] Gerbruikers komen op een gebruikerslijst komen te staan
+- [x] Je kan zien wie online is.
+- [x] Gebruikers kunnen met elkaar communiceren in een groupchat.
+- [x] Gebruikers kunnen woorden invullen om de beschrijving te genereren
+- [x] Moet concrete informatie geven van het woord'
 - [] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
 - [] Gebruikers kunnen in room gaan
-- [] Kijken wie er bijgekomen is in de chat
+- [x] Kijken wie er bijgekomen is in de chat
 - [] Je kan zien welke gebruiker aan het type is
   
 ## Technieken
@@ -201,35 +231,25 @@ Om de response overzicht te krijgen heb ik insomia.rest gebruikt.
 ### Versie 1
 ![data modeling schets versie 1](readme-images/data-modeling-schets.jpg)
 
-## Applicatie installatie
-Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen. 
+---
+## Real time events
+Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gecreerd.
+ 
+ ### Nieuwe gebruiker
+Wanneer een nieuwe gebruiker in de chat komt wordt de `new user` event gestuurd van de client naar de server. De server  luistert naar de `new user` event en als er een nieuwe gebruiker een username geeft, wordt de event naar alle clients gestuurd dat er een gebruiker is erij gekomen.
 
-### Wat heb je nodig:
-- NPM
-- node
-- Express
-- socket.io
-- Nodemon
-- ejs
-- adaptable.io
+### Online gebruikers 
+De ingelogde gebruikers worden in de server opgeslagen in de onlineUser variabele. De opgeslagen gebruikers worden verstuurd onder de `get online user` event. De event word verstuurd naar alle clients. De Client luistert voor de event en zet de online gebruikers in een lijst. 
 
-### Clone repository
+ ### Chat bericht
+ De chat is helemaal opgebouwd op basis van de de woord die de gebruiker had ingevuld. Je kan met meerder mensen spreker maar je kan ook  met een woord, betekenis  van het woord genereren. Het gestuurde bericht wordt vanuit de client naar de server gestuurd onder de chat message event. De server stuurt de berichten naar alle clients. 
 
-    git clone https://github.com/K3A101/css-to-the-rescue-2223.git
+ ### Gebruiker aan het typen
+Wanneer een gebruiker aan het typen is wordt `typing` event getriggered naar de event wordt gestuurd naar de server gestuurd. De server luister naar de typing event en verstuurt de bericht dat de currentgebruiker is aan het typen naar iedereen behalve degenen die het bericht had verstuurt.  
 
-### NPM Installeren
+ ### Gegenereerde woorden uit de API
+ De woorden die de gebruiker typt wordt tegelijkertijd gestuurd naar de API, De API stuur de data terug naar de client en de client stuurt data naar de server met de `wordData` event. De server stuurt de data naar de clients en in de client wordt de data weergegeven. Wat wordt weergegven is de woord spelling, audio, en de betekenis. 
 
-    npm install
 
-### Applicatie starten in developement
-
-    npm run dev
-
-### Applicatie te starten
-
-    npm start
-
-### Applicatie deployen
-Om de applicatie live te zetten heb ik adaptable.io hosting platform gebruikt. Ik heb deze gebruikt omdat het ondersteund websocket. Je kan ook andere hosting platform gebruiken zoals railway.
 ## ⚖ License
 [MIT](https://github.com/K3A101/real-time-web-2223/blob/main/LICENSE) 
