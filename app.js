@@ -28,6 +28,13 @@ io.on('connection', (socket) => {
         console.log(`${chat.username}: ${chat.message}`);
     })
 
+    socket.on('typing', (typingUser) => {
+        // io.emit('typing', typingUser);
+        socket.broadcast.emit('typing', typingUser);
+        console.log(`${typingUser} is typing`);
+    })
+
+
     socket.on('wordData', (data) => {
         io.emit('wordData', data);
         console.log(data);
@@ -53,7 +60,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         delete onlineUsers[socket.username]
         io.emit('user has left', onlineUsers);
-        console.log('A user disconnected');
+        console.log(` A user disconnected`);
     });
 })
 
