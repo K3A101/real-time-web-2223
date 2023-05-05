@@ -1,4 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+:root {
+    --light-blue: #D4EFF3;
+    --dark-blue: #7BC8D3;
+    --dark-teal-blue: #3B8EA5;
+    --white: #FFFFFF;
+    --black: #000000;
+    --title: 'highgate' , Arial , sans-serif;
+    --text: 'interstate' , Arial , sans-serif;
+}
+
+body {
+    background-color: var(--light-blue);
+    font-family: var(--text);
+    font-size: 1.2rem;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    /* color: var(--dark-teal-blue); */
+    
+}
+
+
+
+h2,  h1 {
+    font-family: var(--title);
+        font-weight: bold;
+    }
+
+
+
 .username-form.hidden {
 display: none;
 }
 
+/* .feedback.hidden {
+    display: none;
+} */
+
+.chat.hidden {
+    display: none;
+}
+
+
+/*************/
+/* USER LIST */
+/*************/
+.userlist {
+position: absolute;
+left: -100em;
+}
+
+.user-btn {
+position: absolute;
+right: -3em;
+top: 3em;
+}
+
+.userlist.show-userlist {
+    position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background-color: var(--dark-teal-blue);
+        width: clamp(10em, 30%, 15em);
+        height: 100vh;
+}

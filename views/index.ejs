@@ -10,7 +10,7 @@
       <h1>DictoChat</h1>
     </header>
     <main>
-      <section>
+      <section class="login">
         
         <form class="username-form">
         
@@ -22,18 +22,27 @@
           
         </form>
       </section>
-      <section>
+      
+      <div class="user-container">
+         <div class="userlist">
         <h2>Online Users </h2>
         <ul id="user-online"></ul>
-      </section>
-      <section >
+      </div>
+
+      <button class="user-btn">User List</button>
+
+      </div>
+     
+      <section class="chat">
         <button id="back-btn">Go Back</button>
         <article class="chat-page">
           <!-- Word description -->
+          <ul id="chat-messages"></ul>
           <ul id="words-container"></ul>
 
         </article>
         <form>
+          <div class="feedback"></div>
           <label for="word-input">Enter a word</label>
           <input type="text" autocomplete="off" name="word" id="word-input" value="">
           <button type="submit" id="submit-button">Submit</button>
