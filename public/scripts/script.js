@@ -3,14 +3,19 @@ const socket = io();
 
 const wordInput = document.querySelector('#word-input');
 const submitButton = document.querySelector('#submit-button');
-const chatContainer = document.querySelector('ul');
+const chatContainer = document.querySelector('#chat-messages');
 const chatPage = document.querySelector('#words-container');
 const createUserBtn = document.querySelector('#create-user-btn');
 const usernameForm = document.querySelector('.username-form');
 const userList = document.querySelector('#user-online');
+const typingIndicator = document.querySelector('.feedback');
+const chat = document.querySelector('.chat');
+const backBtn = document.querySelector('#back-btn');
 let currentUser;
 socket.emit('get online users')
 
+// typingIndicator.classList.add('hidden');
+chat.classList.add('hidden');
 
 createUserBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -20,18 +25,32 @@ createUserBtn.addEventListener('click', (e) => {
         socket.emit('new-user', username);
         currentUser = username;
         usernameForm.classList.add('hidden');
+        chat.classList.remove('hidden');
     }
 
     console.log('New user created')
 
 });
 
-
-
-
-wordInput.addEventListener('input', (e) => {
+backBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    console.log(wordInput.value);
+    usernameForm.classList.remove('hidden');
+    chat.classList.add('hidden');
+    // socket.emit('disconnect');
+    // console.log('User disconnected');
+})
+
+
+
+wordInput.addEventListener('keypress', (e) => {
+    let input = wordInput.value;
+    // e.preventDefault();
+
+    const typingUser = currentUser;
+
+    socket.emit('typing', typingUser);
+    
+    // console.log(wordInput.value);
 })
 
 
@@ -66,12 +85,12 @@ socket.on('wordData', (data) => {
     console.log(data);
     displayData(data)
 
-
+    
 })
 
 function displayData(data) {
-
-
+    
+    
     
     const randomIndex = Math.floor(Math.random() * data[0].meanings[0]?.definitions.length);
     const definition = data[0].meanings[0]?.definitions[randomIndex].definition || 'No definition available';
@@ -93,69 +112,85 @@ function displayData(data) {
             break;
         }
     }
-
+    
     
 
     let html = '';
-
+    
     html = `
-        <li class="word">
-        <h2>${word}</h2>
+    <li class="word">
+    <h2>${word}</h2>
          <p>${phonetics}</p>  
-          <audio
-        controls
+         <audio
+         controls
         <source src="${audioUrl}" type="mp3/ogg">
         
             
-    </audio>
+        </audio>
        <figcaption>${audioUrl}</figcaption>
+       
+       <p>${definition}</p>
+       </li>`
+       
+       chatPage.insertAdjacentHTML('beforeend', html);
 
-        <p>${definition}</p>
-        </li>`
+       
+       
+    }
+    
 
-    chatPage.insertAdjacentHTML('beforeend', html);
-
-
- 
-}
-
-
-
-socket.on('chat message', (chat) => {
-
-    const speechBubble = document.createElement('li');
+    
+    socket.on('chat message', (chat) => {
+        
+        const speechBubble = document.createElement('li');
     speechBubble.innerHTML = `<span>${chat.username}</span>:${chat.message}`;
     console.log(`${chat.username}: ${chat.message}`);
-
+    
     chatContainer.appendChild(speechBubble);
     // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
     chat.scrollTop = chat.scrollHeight;
-    console.log()
-
+    
+    console.log('chat message received')
+    
     // In your own perspectief staat de chat message in de rechterkant van de chat
-
+    
 })
 
 socket.on('new-user', (username) => {
     console.log(username + ' has joined the chat');
-    const user = document.createElement('li');
-    user.innerHTML = `${username}`;
+    let user = document.createElement('li');
+    user.innerHTML = `${username} has joined the chat`;
     userList.appendChild(user);
 });
 
 socket.on('get online users', (onlineUsers) => {
+    userList.innerHTML = '';
     for (username in onlineUsers) {
-        const user = document.createElement('li');
-        user.innerHTML = `${username}`;
+        let user = document.createElement('li');
+        user.innerHTML = `${username} is online`;
         userList.appendChild(user);
     }
 });
 
+socket.on('typing', (typingUser) => {
+    
+    // const typingIndicator = document.createElement('div');
+    typingIndicator.innerHTML = `${typingUser} is typing...`;
+    console.log(`${typingUser} is typing...`);
+    
+    console.log('User is typing')
+    // typingIndicator.classList.remove('hidden');
+    
+    // In your own perspectief staat de chat message in de rechterkant van de chat
+    
+})
+
+
 socket.on('user has left', (onlineUsers) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
-        const user = document.createElement('li');
-        user.innerHTML = `${username}`;
+        let user = document.createElement('li');
+        user.innerHTML = `${username} has left the chat`;
         userList.appendChild(user);
     }
 });
