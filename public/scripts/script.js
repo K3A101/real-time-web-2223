@@ -11,11 +11,20 @@ const userList = document.querySelector('#user-online');
 const typingIndicator = document.querySelector('.feedback');
 const chat = document.querySelector('.chat');
 const backBtn = document.querySelector('#back-btn');
+const userListButton = document.querySelector('.user-btn');
 let currentUser;
 socket.emit('get online users')
 
 // typingIndicator.classList.add('hidden');
 chat.classList.add('hidden');
+
+userListButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const userlistContainer = document.querySelector('.userlist'); 
+    userlistContainer.classList.toggle('show-userlist');
+});
+
+
 
 createUserBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -159,7 +168,7 @@ function displayData(data) {
 socket.on('new-user', (username) => {
     console.log(username + ' has joined the chat');
     let user = document.createElement('li');
-    user.innerHTML = `${username} has joined the chat`;
+    user.innerHTML = `${username}`;
     userList.appendChild(user);
 });
 
