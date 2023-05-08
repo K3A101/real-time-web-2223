@@ -9,6 +9,7 @@
     --light-blue: #D4EFF3;
     --dark-blue: #7BC8D3;
     --dark-teal-blue: #3B8EA5;
+    --darkest-teal-blue: #2F5D6B;
     --white: #FFFFFF;
     --black: #000000;
     --black-low-opacity: rgba(0 0 0 / 0.2);
@@ -43,6 +44,7 @@ li {
 
 audio {
     width: 100%;
+    margin: .5em 0;
 }
 
 /* hidden form */
@@ -187,6 +189,10 @@ main {
     justify-content: flex-end;
 }
 
+/******************/
+/* THE DICTIONARY */
+/******************/
+
 #words-container {
     /* align-self: end; */
     display: flex;
@@ -207,13 +213,38 @@ main {
     height: fit-content;
     width: 100%;
 }
+.word h2 {
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--dark-teal-blue);
+    text-transform: capitalize;
+}
+/* .word h2::first-letter {
+    text-transform: uppercase;
+} */
 
+.word p:nth-of-type(2) {
+    color: var(--darkest-teal-blue);
+    padding: .5em 0;
+}
 
-
+.copy-word-btn {
+    border: none;
+    color: var(--white);
+    background-color: var(--dark-teal-blue);
+    padding: .5em 1em;
+    border-radius: .5em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: .5em;
+}
 #words-container::-webkit-scrollbar {
     opacity: 0;
 }
 
+figcaption {
+    font-size: .8em;
+}
 /************/
 /* THE CHAT */
 /************/

@@ -3,8 +3,15 @@
 ## Het Process
 Voor deze cursus moeten we een chat ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Om te beginnen met deze cursus krijgen we de opdracht om samen als team aan de slag te gaan met het bouwen van een chatapplicatie. Zodat we een sterke basis hebben om te beginnen en dan kunnen we onze eigen functionaliteiten toevoegen om deze cursus te halen. Deze opdracht is behoorlijk tijdrovend, omdat we met dit project op maandag beginnen en de volgende dag (dinsdag) de opdracht moeten voltooien en feedback van de docenten moeten krijgen.
 
+## Live Demo Links
+<!-- 	Stabiele versie -->
+- https://real-time-web-2223-production-287b.up.railway.app/
+- https://realtime-webapp.adaptable.app/
+
+---
 # Inhoudsopgave
 - [Het Process]()
+- [Live Demo Links]()
 - [Applicatie Installatie]()
 - [Proof of Concept]()
   - [Idee 1: Guess the disney Character]()
