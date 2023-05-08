@@ -8,6 +8,7 @@ const chatPage = document.querySelector('#words-container');
 const createUserBtn = document.querySelector('#create-user-btn');
 const usernameForm = document.querySelector('.username-form');
 const userList = document.querySelector('#user-online');
+const usernameInput = document.querySelector('#username-input');
 const typingIndicator = document.querySelector('.feedback');
 const chat = document.querySelector('.chat');
 const backBtn = document.querySelector('#back-btn');
@@ -36,9 +37,9 @@ createUserBtn.addEventListener('click', (e) => {
         usernameForm.classList.add('hidden');
         chat.classList.remove('hidden');
     }
-
+    
     console.log('New user created')
-
+    
 });
 
 backBtn.addEventListener('click', (e) => {
@@ -64,19 +65,19 @@ wordInput.addEventListener('keypress', (e) => {
 
 
 submitButton.addEventListener('click', (e) => {
+    const articleElement = document.querySelector('chat-page');
     e.preventDefault();
     let word = wordInput.value;
-
     fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
-        // fetch('/new-word' + word)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            socket.emit('wordData', data);
-        }).catch(err => {
-            console.log(err)
-        })
-
+    // fetch('/new-word' + word)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        socket.emit('wordData', data);
+    }).catch(err => {
+        console.log(err)
+    })
+    
     if (word.length > 0) {
         //Ik maak een array van object aan met de waarde van de username en de message
         const chat = {
@@ -88,6 +89,7 @@ submitButton.addEventListener('click', (e) => {
         socket.emit('chat message', chat); //verstuurd een chat message  event naar de server met de chat object array als data
         word = '';
     }
+    articleElement.classList.add('move')
 })
 
 socket.on('wordData', (data) => {
@@ -160,6 +162,10 @@ function displayData(data) {
     chat.scrollTop = chat.scrollHeight;
     
     console.log('chat message received')
+    // Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
+        // if (chat.username === usernameInput.value) {
+        //     speechBubble.classList.add('own-message');
+        // }
     
     // In your own perspectief staat de chat message in de rechterkant van de chat
     
