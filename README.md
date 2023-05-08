@@ -1,7 +1,24 @@
-# Real-Time Web @cmda-minor-web 2022 - 2023
+# Real-Time Web 
 
-## 🏫 Course 
+## Het Process
 Voor deze cursus moeten we een chat ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Om te beginnen met deze cursus krijgen we de opdracht om samen als team aan de slag te gaan met het bouwen van een chatapplicatie. Zodat we een sterke basis hebben om te beginnen en dan kunnen we onze eigen functionaliteiten toevoegen om deze cursus te halen. Deze opdracht is behoorlijk tijdrovend, omdat we met dit project op maandag beginnen en de volgende dag (dinsdag) de opdracht moeten voltooien en feedback van de docenten moeten krijgen.
+
+# Inhoudsopgave
+- [Het Process]()
+- [Applicatie Installatie]()
+- [Proof of Concept]()
+  - [Idee 1: Guess the disney Character]()
+  - [Idee 2: Woordenboek generator chat]()
+  - [Idee 3: Watch together app]()
+- [Het Concept]()
+- [Dictionary  generator chat app]()
+- [Functionaliteiten]()
+- [Hoe gebruik je de App]()
+- [Free Dictionary Api]()
+- [Data Modeling]()
+- [Data Life cycle Diagram]()
+- [Real time Events]()
+---
 ## Applicatie installatie
 Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen. 
 
@@ -33,7 +50,7 @@ Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen
 ### Applicatie deployen
 Om de applicatie live te zetten heb ik adaptable.io hosting platform gebruikt. Ik heb deze gebruikt omdat het ondersteund websocket. Je kan ook andere hosting platform gebruiken zoals railway.
 
-## 🤔 Concept
+---
 
 ## Proof of concept
 Wat is een proof-of-concept. Proof of concept is een ontwerpmethode waarbij je nadenkt over drie mogelijke ideeën die kunnen worden geïmplementeerd. In mijn geval gebruik ik deze methode om drie concepten te creëren voor mijn real-time webapplicatie te bouwen. Voor elk concept maak ik een ruwe schets zodat mensen mijn ideeën beter kunnen begrijpen. En om ze te visualiseren. 
@@ -91,10 +108,12 @@ Ik wil voor mij concept een woordenboek generator maken. Dus een groep mensen ko
 - [x] Gebruikers kunnen met elkaar communiceren in een groupchat.
 - [x] Gebruikers kunnen woorden invullen om de beschrijving te genereren
 - [x] Moet concrete informatie geven van het woord'
-- [] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
-- [] Gebruikers kunnen in room gaan
+- [ ] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
+- [ ] Gebruikers kunnen in room gaan
 - [x] Kijken wie er bijgekomen is in de chat
-- [] Je kan zien welke gebruiker aan het type is
+- [ ] Je kan zien welke gebruiker aan het type is
+
+
   
 ## Must have
 - [x] Gebruikers kunnen gebruikersnaam maken
@@ -105,23 +124,29 @@ Ik wil voor mij concept een woordenboek generator maken. Dus een groep mensen ko
 - [x] Moet concrete informatie geven van het woord'
 
 ## Should have
-- [] Instructie hoe je de app gebruikt
-- [] Moet werkend zijn op mobiel
-- 
-
+- [ ] Instructie hoe je de app gebruikt
+- [ ] Moet werkend zijn op mobiel
 
 ## Could have
-- [] Gebruikers kunnen in room gaan
-- [] Gebruikers krijgen notifactie dat iemand is daarbij gekomen
-- [] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
-- [] Gebruikers kunnen de beschrijving van de woord kopieren met een button 
+- [ ] Gebruikers kunnen in room gaan
+- [ ] Gebruikers krijgen notifactie dat iemand is daarbij gekomen
+- [ ] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
+- [ ] Gebruikers kunnen de beschrijving van de woord kopieren met een button 
 
 ## Technieken
-- [] De gebruikersnaam pagina verbergen wanneer de gebruiker op de button klikt
-- [] Een overzicht van de woord naast de chat
-- [] Een plek waar je de woord kan invoeren
-- [] Een overzicht lijst met alle gebruikers die nu in de room is
+- [ ] De gebruikersnaam pagina verbergen wanneer de gebruiker op de button klikt
+- [ ] Een overzicht van de woord naast de chat
+- [ ] Een plek waar je de woord kan invoeren
+- [ ] Een overzicht lijst met alle gebruikers die nu in de room is
 
+## Hoe gebruik je de app?
+
+### Een gebruikersnaam aanmaken
+
+### In de Chatroom gaan 
+
+
+### Een woord in de  Input invullen?
 
 ## Schetsen
 
@@ -251,9 +276,11 @@ Om de response overzicht te krijgen heb ik insomia.rest gebruikt.
 ### Versie 1
 ![data modeling schets versie 1](readme-images/data-modeling-schets.jpg)
 
+
+## Data Lifecycle Diagram
 ---
-## Real time events
-Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gecreerd.
+# Real time events
+Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gemaakt.
  
  ### Nieuwe gebruiker
 Wanneer een nieuwe gebruiker in de chat komt wordt de `new user` event gestuurd van de client naar de server. De server  luistert naar de `new user` event en als er een nieuwe gebruiker een username geeft, wordt de event naar alle clients gestuurd dat er een gebruiker is erij gekomen.

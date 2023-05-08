@@ -44,6 +44,7 @@ li {
 audio {
     width: 100%;
 }
+
 /* hidden form */
 .username-form.hidden {
     display: none;
@@ -101,18 +102,33 @@ header h1 {
     transform: translateX(0);
 }
 
-/* .user-container {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-   
-    background-color: var(--dark-teal-blue);
-    width: clamp(10em, 30%, 15em);
+.userlist {
+    margin: 2em;
+    color: var(--white);
+}
 
-    transition: .5s transform;
-} */
+#user-online {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    height: 80vh;
+}
 
+#user-online li {
+    color: var(--dark-teal-blue);
+    background-color: var(--white);
+    padding: .5em;
+    border-bottom: 1px solid var(--white);
+    border-radius: .5em;
+    font-weight: bold;
+
+}
+
+#user-online::-webkit-scrollbar {
+    opacity: 0;
+}
 
 
 .user-btn {
@@ -198,7 +214,9 @@ main {
     opacity: 0;
 }
 
-
+/************/
+/* THE CHAT */
+/************/
 
 .chat-form {
     position: relative;
@@ -211,6 +229,7 @@ main {
     text-align: center;
     padding: .5em;
 }
+
 .chat-form form {
     position: absolute;
     bottom: 0;
@@ -237,6 +256,13 @@ main {
     margin: .5em;
     align-self: start;
     border-radius: .5em;
+}
+
+#chat-messages li span {
+    display: block;
+    font-size: .8em;
+    font-weight: bold;
+    margin-bottom: 2px;
 }
 
 #chat-messages li.own-message {
@@ -319,7 +345,7 @@ main {
 }
 
 
-@media (min-width: 45em) {
+@media (min-width: 60em) {
 
     /* Username form */
     .username-form {

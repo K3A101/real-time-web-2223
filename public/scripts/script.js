@@ -149,6 +149,7 @@ function displayData(data) {
        <figcaption>${audioUrl}</figcaption>
        
        <p>${definition}</p>
+       <button class="copy-word-btn">Copy the description</button>
        </li>`
 
     chatPage.insertAdjacentHTML('beforeend', html);
@@ -162,7 +163,7 @@ function displayData(data) {
 socket.on('chat message', (chat) => {
 
     const speechBubble = document.createElement('li');
-    speechBubble.innerHTML = `<span>${chat.username}</span>:${chat.message}`;
+    speechBubble.innerHTML = `<span>${chat.username}</span>${chat.message}`;
     console.log(`${chat.username}: ${chat.message}`);
 
     chatContainer.appendChild(speechBubble);
@@ -206,9 +207,7 @@ socket.on('typing', (typingUser) => {
 
     // const typingIndicator = document.createElement('div');
     typingIndicator.innerHTML = `${typingUser} is typing...`;
-
     console.log(`${typingUser} is typing...`);
-
     console.log('User is typing')
     // typingIndicator.classList.remove('hidden');
 
