@@ -18,17 +18,20 @@ socket.emit('get online users')
 
 // typingIndicator.classList.add('hidden');
 chat.classList.add('hidden');
+backBtn.classList.add('hide-back-btn');
 
-userListButton.addEventListener('click', (e) => {
+userListButton.addEventListener('click', (e, button) => {
     e.preventDefault();
-    const userlistContainer = document.querySelector('.userlist'); 
+    const userlistContainer = document.querySelector('.user-container'); 
     userlistContainer.classList.toggle('show-userlist');
+    // button.classList.toggle('show-userlist')
 });
 
 
 
 createUserBtn.addEventListener('click', (e) => {
     e.preventDefault();
+    backBtn.classList.remove('hide-back-btn');
     const usernameInput = document.querySelector('#username-input');
     const username = usernameInput.value.trim();
     if (username.length > 0) {
@@ -45,6 +48,7 @@ createUserBtn.addEventListener('click', (e) => {
 backBtn.addEventListener('click', (e) => {
     e.preventDefault();
     usernameForm.classList.remove('hidden');
+    backBtn.classList.add('hide-back-btn');
     chat.classList.add('hidden');
     // socket.emit('disconnect');
     // console.log('User disconnected');
@@ -98,7 +102,7 @@ sendMessage.addEventListener('click', (e) => {
 socket.on('wordData', (data) => {
     console.log(data);
     displayData(data)
-
+ data.scrollTop = data.scrollHeight;
     
 })
 
