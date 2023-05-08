@@ -3,8 +3,6 @@ const app = express();
 const http = require('http').createServer(app);
 const path = require('path');
 const io = require('socket.io')(http);
-// const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-// const axios = require('axios');
 const port = process.env.PORT || 4242
 let onlineUsers = {};
 
