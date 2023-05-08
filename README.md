@@ -96,6 +96,26 @@ Ik wil voor mij concept een woordenboek generator maken. Dus een groep mensen ko
 - [x] Kijken wie er bijgekomen is in de chat
 - [] Je kan zien welke gebruiker aan het type is
   
+## Must have
+- [x] Gebruikers kunnen gebruikersnaam maken
+- [x] Gerbruikers komen op een gebruikerslijst komen te staan
+- [x] Je kan zien wie online is.
+- [x] Gebruikers kunnen met elkaar communiceren in een groupchat.
+- [x] Gebruikers kunnen woorden invullen om de beschrijving te genereren
+- [x] Moet concrete informatie geven van het woord'
+
+## Should have
+- [] Instructie hoe je de app gebruikt
+- [] Moet werkend zijn op mobiel
+- 
+
+
+## Could have
+- [] Gebruikers kunnen in room gaan
+- [] Gebruikers krijgen notifactie dat iemand is daarbij gekomen
+- [] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
+- [] Gebruikers kunnen de beschrijving van de woord kopieren met een button 
+
 ## Technieken
 - [] De gebruikersnaam pagina verbergen wanneer de gebruiker op de button klikt
 - [] Een overzicht van de woord naast de chat

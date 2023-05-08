@@ -2,7 +2,7 @@ console.log('script.js loaded');
 const socket = io();
 
 const wordInput = document.querySelector('#word-input');
-const submitButton = document.querySelector('#submit-button');
+const sendMessage = document.querySelector('#submit-button');
 const chatContainer = document.querySelector('#chat-messages');
 const chatPage = document.querySelector('#words-container');
 const createUserBtn = document.querySelector('#create-user-btn');
@@ -52,20 +52,19 @@ backBtn.addEventListener('click', (e) => {
 
 
 
-wordInput.addEventListener('keypress', (e) => {
+wordInput.addEventListener('input', (e) => {
     let input = wordInput.value;
-    // e.preventDefault();
-
+    // typingIndicator.classList.add('show-typing-indicator');
+    e.preventDefault();
     const typingUser = currentUser;
-
     socket.emit('typing', typingUser);
-    
     // console.log(wordInput.value);
 })
 
 
-submitButton.addEventListener('click', (e) => {
-    const articleElement = document.querySelector('chat-page');
+sendMessage.addEventListener('click', (e) => {
+    
+    const typingUser = currentUser;
     e.preventDefault();
     let word = wordInput.value;
     fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
@@ -79,6 +78,7 @@ submitButton.addEventListener('click', (e) => {
     })
     
     if (word.length > 0) {
+        
         //Ik maak een array van object aan met de waarde van de username en de message
         const chat = {
             username: currentUser,
@@ -87,9 +87,12 @@ submitButton.addEventListener('click', (e) => {
         //De chat message event wordt gestuurd met de chat array als parameter
         //De chat array bevat de username en de message
         socket.emit('chat message', chat); //verstuurd een chat message  event naar de server met de chat object array als data
-        word = '';
+        socket.emit('stop typing', typingUser);
+        wordInput.value = '';
     }
-    articleElement.classList.add('move')
+   
+    
+  
 })
 
 socket.on('wordData', (data) => {
@@ -162,10 +165,10 @@ function displayData(data) {
     chat.scrollTop = chat.scrollHeight;
     
     console.log('chat message received')
-    // Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
-        // if (chat.username === usernameInput.value) {
-        //     speechBubble.classList.add('own-message');
-        // }
+    //Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
+        if (chat.username === usernameInput.value) {
+            speechBubble.classList.add('own-message');
+        }
     
     // In your own perspectief staat de chat message in de rechterkant van de chat
     
@@ -191,12 +194,21 @@ socket.on('typing', (typingUser) => {
     
     // const typingIndicator = document.createElement('div');
     typingIndicator.innerHTML = `${typingUser} is typing...`;
+    
     console.log(`${typingUser} is typing...`);
     
     console.log('User is typing')
     // typingIndicator.classList.remove('hidden');
     
     // In your own perspectief staat de chat message in de rechterkant van de chat
+    
+})
+
+socket.on('stop typing', (typingUser) => {
+    typingIndicator.innerHTML = '';
+    console.log(`${typingUser} has stopped typing...`);
+    
+    console.log('User has stopped typing');
     
 })
 

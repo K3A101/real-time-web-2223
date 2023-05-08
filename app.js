@@ -34,6 +34,12 @@ io.on('connection', (socket) => {
         console.log(`${typingUser} is typing`);
     })
 
+    socket.on('stop typing', (typingUser) => {
+        // io.emit('typing', typingUser);
+        socket.broadcast.emit('stop typing', typingUser);
+        console.log(`${typingUser} stopped typing`);
+    })
+
 
     socket.on('wordData', (data) => {
         io.emit('wordData', data);
