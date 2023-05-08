@@ -41,6 +41,9 @@ li {
     list-style: none;
 }
 
+audio {
+    width: 100%;
+}
 /* hidden form */
 .username-form.hidden {
     display: none;
@@ -81,11 +84,22 @@ header h1 {
     left: 0;
     top: 0;
     bottom: 0;
-transform: translateX(-100%);
+    transform: translateX(-100%);
     transition: .5s transform;
 }
 
+.user-container.show-userlist {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    /* height: 100vh; */
+    transform: translateX(0);
+    background-color: var(--dark-teal-blue);
+    width: clamp(10em, 30%, 15em);
 
+    transition: .5s transform;
+    transform: translateX(0);
+}
 
 /* .user-container {
     position: fixed;
@@ -146,9 +160,9 @@ main {
 
 .chat-page {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    height: 80vh;
+    height: 85vh;
     width: 100%;
 }
 
@@ -175,7 +189,7 @@ main {
     background-color: white;
     padding: 1em;
     height: fit-content;
-    width: 25vw;
+    width: 100%;
 }
 
 
@@ -189,10 +203,14 @@ main {
 .chat-form {
     position: relative;
     background-color: var(--white);
-    width: 25vw;
+    width: 100%;
     height: 75vh;
 }
 
+.chat-form h3 {
+    text-align: center;
+    padding: .5em;
+}
 .chat-form form {
     position: absolute;
     bottom: 0;
@@ -325,6 +343,21 @@ main {
 
     .user-container.show-userlist {
         transform: translateX(0);
+    }
+
+
+    .chat-page {
+        flex-direction: row;
+
+    }
+
+    #words-container li {
+        width: 25vw;
+    }
+
+    .chat-form {
+        width: 25vw;
+        height: 75vh;
     }
 
 }
