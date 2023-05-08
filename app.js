@@ -54,6 +54,13 @@ io.on('connection', (socket) => {
         io.emit('new-user', username);
     })
 
+    socket.on('user joined', (username) => {
+        console.log(`${username} has joined the chat`);
+        //Save the username as key to access the user's socket id
+        onlineUsers[username] = socket.id;
+        socket['username'] = username;
+        io.emit('user joined', username);
+    })
     socket.on('get online users', () => {
         //Send over the onlineUsers
         socket.emit('get online users', onlineUsers);

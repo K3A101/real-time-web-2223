@@ -22,7 +22,7 @@ backBtn.classList.add('hide-back-btn');
 
 userListButton.addEventListener('click', (e, button) => {
     e.preventDefault();
-    const userlistContainer = document.querySelector('.user-container'); 
+    const userlistContainer = document.querySelector('.user-container');
     userlistContainer.classList.toggle('show-userlist');
     // button.classList.toggle('show-userlist')
 });
@@ -36,13 +36,14 @@ createUserBtn.addEventListener('click', (e) => {
     const username = usernameInput.value.trim();
     if (username.length > 0) {
         socket.emit('new-user', username);
+        socket.emit('user joined', username);
         currentUser = username;
         usernameForm.classList.add('hidden');
         chat.classList.remove('hidden');
     }
-    
+
     console.log('New user created')
-    
+
 });
 
 backBtn.addEventListener('click', (e) => {
@@ -67,22 +68,22 @@ wordInput.addEventListener('input', (e) => {
 
 
 sendMessage.addEventListener('click', (e) => {
-    
+
     const typingUser = currentUser;
     e.preventDefault();
     let word = wordInput.value;
     fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
-    // fetch('/new-word' + word)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        socket.emit('wordData', data);
-    }).catch(err => {
-        console.log(err)
-    })
-    
+        // fetch('/new-word' + word)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            socket.emit('wordData', data);
+        }).catch(err => {
+            console.log(err)
+        })
+
     if (word.length > 0) {
-        
+
         //Ik maak een array van object aan met de waarde van de username en de message
         const chat = {
             username: currentUser,
@@ -94,22 +95,22 @@ sendMessage.addEventListener('click', (e) => {
         socket.emit('stop typing', typingUser);
         wordInput.value = '';
     }
-   
-    
-  
+
+
+
 })
 
 socket.on('wordData', (data) => {
     console.log(data);
     displayData(data)
- data.scrollTop = data.scrollHeight;
-    
+    data.scrollTop = data.scrollHeight;
+
 })
 
 function displayData(data) {
-    
-    
-    
+
+
+
     const randomIndex = Math.floor(Math.random() * data[0].meanings[0]?.definitions.length);
     const definition = data[0].meanings[0]?.definitions[randomIndex].definition || 'No definition available';
     const word = data[0].word;
@@ -126,15 +127,15 @@ function displayData(data) {
     let phonetics = 'No phonetics available'
     for (let t = 0; t < data[0].phonetics.length; t++) {
         if (data[0].phonetics[t].text) {
-            phonetics = data[0].phonetics[t].text || data[0].phonetic ;
+            phonetics = data[0].phonetics[t].text || data[0].phonetic;
             break;
         }
     }
-    
-    
+
+
 
     let html = '';
-    
+
     html = `
     <li class="word">
     <h2>${word}</h2>
@@ -149,33 +150,33 @@ function displayData(data) {
        
        <p>${definition}</p>
        </li>`
-       
-       chatPage.insertAdjacentHTML('beforeend', html);
 
-       
-       
-    }
-    
+    chatPage.insertAdjacentHTML('beforeend', html);
 
-    
-    socket.on('chat message', (chat) => {
-        
-        const speechBubble = document.createElement('li');
+
+
+}
+
+
+
+socket.on('chat message', (chat) => {
+
+    const speechBubble = document.createElement('li');
     speechBubble.innerHTML = `<span>${chat.username}</span>:${chat.message}`;
     console.log(`${chat.username}: ${chat.message}`);
-    
+
     chatContainer.appendChild(speechBubble);
     // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
     chat.scrollTop = chat.scrollHeight;
-    
+
     console.log('chat message received')
     //Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
-        if (chat.username === usernameInput.value) {
-            speechBubble.classList.add('own-message');
-        }
-    
+    if (chat.username === usernameInput.value) {
+        speechBubble.classList.add('own-message');
+    }
+
     // In your own perspectief staat de chat message in de rechterkant van de chat
-    
+
 })
 
 socket.on('new-user', (username) => {
@@ -183,6 +184,13 @@ socket.on('new-user', (username) => {
     let user = document.createElement('li');
     user.innerHTML = `${username}`;
     userList.appendChild(user);
+});
+
+socket.on('user joined', (username) => {
+    console.log(username + ' has joined the chat');
+    let user = document.createElement('li');
+    user.innerHTML = `${username} has joined the chat`;
+    chatContainer.appendChild(user);
 });
 
 socket.on('get online users', (onlineUsers) => {
@@ -195,25 +203,25 @@ socket.on('get online users', (onlineUsers) => {
 });
 
 socket.on('typing', (typingUser) => {
-    
+
     // const typingIndicator = document.createElement('div');
     typingIndicator.innerHTML = `${typingUser} is typing...`;
-    
+
     console.log(`${typingUser} is typing...`);
-    
+
     console.log('User is typing')
     // typingIndicator.classList.remove('hidden');
-    
+
     // In your own perspectief staat de chat message in de rechterkant van de chat
-    
+
 })
 
 socket.on('stop typing', (typingUser) => {
     typingIndicator.innerHTML = '';
     console.log(`${typingUser} has stopped typing...`);
-    
+
     console.log('User has stopped typing');
-    
+
 })
 
 
@@ -222,6 +230,7 @@ socket.on('user has left', (onlineUsers) => {
     for (username in onlineUsers) {
         let user = document.createElement('li');
         user.innerHTML = `${username} has left the chat`;
-        userList.appendChild(user);
+        chatContainer.appendChild(user);
+
     }
 });
