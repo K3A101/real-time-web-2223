@@ -18,6 +18,12 @@ const userList = document.querySelector('#user-online');
 const usernameInput = document.querySelector('#username-input');
 const userListButton = document.querySelector('.user-btn');
 
+// Variabel om het woord definitie te kopieren
+const copyBtns = document.querySelector('.copy-word-btn');
+console.log(copyBtns)
+const textToCopy = document.querySelectorAll('.word-definition');
+const copyConfirmations = document.querySelectorAll('.copied-confirmation');
+let copiedText
 
 let currentUser;
 socket.emit('get online users')
@@ -141,13 +147,24 @@ function displayData(data) {
             <source src="${audioUrl}" type="mp3/ogg">
         </audio>
        <figcaption>${audioUrl}</figcaption>
-       <p>${definition}</p>
+       <p class="word-definition">${definition}</p>
        <button class="copy-word-btn">Copy the description</button>
+       <div class="copied-confirmation"></div>
     </li>`
 
     wordsDictionarySection.insertAdjacentHTML('beforeend', html);
 
 }
+
+// ------------------- HET DEFINITIE KOPIEREM -------------------
+// for (let i = 0; i < copyBtns.length; i++) {
+//    copyBtns[i].addEventListener('click', () => {
+//        navigator.clipboard.writeText(textToCopy[i].innerText);
+//        copiedText = textToCopy[i].innerText;
+//          console.log(copiedText);
+//    })
+    
+// }
 
 // ----------------- SOCKET REALTIME EVENTS ----------------- //
 // wanneer de server de wordData event stuurt, wordt de data in de displayData functie geplaatst
@@ -224,7 +241,6 @@ socket.on('stop typing', (typingUser) => {
 
 })
 
-
 socket.on('user has left', (onlineUsers) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
@@ -234,3 +250,17 @@ socket.on('user has left', (onlineUsers) => {
 
     }
 });
+
+// kijk voor de connectie met de server elke keer of de connectie er nog is
+socket.on('connect', () => {
+    setInterval(() => {
+        if(socket.connected){
+            console.log(' Socket is connected');
+            chat.classList.remove('socket-disconnected');
+        }else{
+            console.log('Socket is disconnected');
+            chat.classList.add('socket-disconnected');
+        }
+    }, 500)
+
+})
