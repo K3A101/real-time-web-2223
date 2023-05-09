@@ -197,11 +197,9 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 - [x] Gebruikers kunnen met elkaar communiceren in een groupchat.
 - [x] Gebruikers kunnen woorden invullen om de beschrijving te genereren
 - [x] Moet concrete informatie geven van het woord'
-- [ ] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
-- [ ] Gebruikers kunnen in room gaan
 - [x] Kijken wie er bijgekomen is in de chat
 - [x] Kijken wie uit de chat Weggegaan zijn
-- [ ] Je kan zien welke gebruiker aan het type is
+- [X] Je kan zien welke gebruiker aan het type is
 
 ## Must have
 - [x] Gebruikers kunnen gebruikersnaam maken
@@ -210,18 +208,22 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 - [x] Gebruikers kunnen met elkaar communiceren in een groupchat.
 - [x] Gebruikers kunnen woorden invullen om het definitie te genereren
 - [x] Moet concrete informatie geven van het woord'
+- [ ] Berichten worden opgeslagen
+- [ ] Data life cycle diagram
+- [ ] 
 
 ## Should have
 - [ ] Instructie hoe je de app gebruikt
 - [x] Moet werkend zijn op mobiel
-
+- [ ] Offline ondersteuning 
+- [ ] 
 ## Could have
 - [ ] Gebruikers kunnen in room gaan
 - [ ] Gebruikers krijgen notifactie dat iemand is daarbij gekomen
 - [ ] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
 - [ ] Gebruikers kunnen de beschrijving van de woord kopieren met een button 
 
-## Would have
+## Would have but not right now
 - [ ] Een melding die aangeeft dat er geen informatie kunnen vinden van het woord.
 - [ ] Aangeven hoelaat de berichten zijn gestuurd.
 

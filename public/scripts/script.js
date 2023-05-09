@@ -149,12 +149,9 @@ function displayData(data) {
 
     wordsDictionarySection.insertAdjacentHTML('beforeend', html);
     
-
-    const copyBtns = document.querySelectorAll('.word button.copy-word-btn');
-    console.log("copyBtns", wordsDictionarySection, copyBtns)
-
+copyText();
+    
 }
-
 
 
 socket.on('wordData', (data) => {
@@ -164,28 +161,53 @@ socket.on('wordData', (data) => {
     wordsDictionarySection.scrollTop = wordsDictionarySection.scrollHeight;
 
 })
+
+socket.on('word description history', wordDescriptionHistory => {
+    wordDescriptionHistory.forEach(data => {
+        displayData(data);
+    })
+})
+
 // ------------------- HET DEFINITIE KOPIEREM -------------------
+function copyText() {
+
+    const textToCopy = document.querySelectorAll('.word-definition');
+    const copyConfirmations = document.querySelectorAll('.copied-confirmation');
+    let copiedText
+
+    const copyBtns = document.querySelectorAll('.word button.copy-word-btn');
+    console.log("copyBtns", wordsDictionarySection, copyBtns);
+
+    for (let i = 0; i < copyBtns.length; i++) {
+   copyBtns[i].addEventListener('click', () => {
+       navigator.clipboard.writeText(textToCopy[i].innerText);
+       copiedText = textToCopy[i].innerText;
+         console.log(copiedText);
+   })
+
+}
+
+}
 
 // Variabel om het woord definitie te kopieren
 
-const textToCopy = document.querySelectorAll('.word-definition');
-const copyConfirmations = document.querySelectorAll('.copied-confirmation');
-let copiedText
 
-// for (let i = 0; i < copyBtns.length; i++) {
-//    copyBtns[i].addEventListener('click', () => {
-//        navigator.clipboard.writeText(textToCopy[i].innerText);
-//        copiedText = textToCopy[i].innerText;
-//          console.log(copiedText);
-//    })
-
-// }
 
 // ----------------- SOCKET REALTIME EVENTS ----------------- //
 // wanneer de server de wordData event stuurt, wordt de data in de displayData functie geplaatst
 //Hier word de berichten in de chat zichtbaar gemaakt
 socket.on('chat message', (chat) => {
+ addChatMessage(chat);
 
+})
+socket.on('chat history', chatHistory => {
+    chatHistory.forEach(chat => {
+        addChatMessage(chat);
+    })
+})
+
+
+function addChatMessage(chat) {
     const speechBubble = document.createElement('li');
     speechBubble.innerHTML = `<span>${chat.username}</span>${chat.message}`;
     console.log(`${chat.username}: ${chat.message}`);
@@ -200,10 +222,8 @@ socket.on('chat message', (chat) => {
     if (chat.username === usernameInput.value) {
         speechBubble.classList.add('own-message');
     }
+}
 
-
-
-})
 
 // Wanneer een nieuwe gebruiker wordt aangemaakt, wordt de username in de userList geplaatst
 socket.on('new-user', (username) => {

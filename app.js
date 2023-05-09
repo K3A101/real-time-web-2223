@@ -4,6 +4,10 @@ const http = require('http').createServer(app);
 const path = require('path');
 const io = require('socket.io')(http);
 const port = process.env.PORT || 4242
+const historySize = 50;
+let chatHistory = [];
+let wordDescriptionHistory = [];
+
 let onlineUsers = {};
 
 // gegevens inladen
@@ -21,7 +25,16 @@ app.use('/', appRoutes);
 
 
 io.on('connection', (socket) => {
+    socket.emit('chat history', chatHistory);
+    socket.emit('word description history', wordDescriptionHistory);
+
     socket.on('chat message', (chat) => {
+
+        while (chatHistory.length >= historySize) {
+            chatHistory.shift();
+        }
+        chatHistory.push(chat);
+
         io.emit('chat message', chat);
         console.log(`${chat.username}: ${chat.message}`);
     })
@@ -41,8 +54,14 @@ io.on('connection', (socket) => {
 
     socket.on('wordData', (data) => {
         io.emit('wordData', data);
+
+        while (wordDescriptionHistory.length >= historySize) {
+            wordDescriptionHistory.shift();
+        }
+        wordDescriptionHistory.push(data);
         console.log(data);
     })
+
 
     socket.on('new-user', (username) => {
         console.log(`${username} has joined the chat`);
