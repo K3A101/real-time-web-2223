@@ -148,9 +148,9 @@ function displayData(data) {
     </li>`
 
     wordsDictionarySection.insertAdjacentHTML('beforeend', html);
-    
-copyText();
-    
+
+    copyText();
+
 }
 
 
@@ -179,13 +179,13 @@ function copyText() {
     console.log("copyBtns", wordsDictionarySection, copyBtns);
 
     for (let i = 0; i < copyBtns.length; i++) {
-   copyBtns[i].addEventListener('click', () => {
-       navigator.clipboard.writeText(textToCopy[i].innerText);
-       copiedText = textToCopy[i].innerText;
-         console.log(copiedText);
-   })
+        copyBtns[i].addEventListener('click', () => {
+            navigator.clipboard.writeText(textToCopy[i].innerText);
+            copiedText = textToCopy[i].innerText;
+            console.log(copiedText);
+        })
 
-}
+    }
 
 }
 
@@ -197,7 +197,7 @@ function copyText() {
 // wanneer de server de wordData event stuurt, wordt de data in de displayData functie geplaatst
 //Hier word de berichten in de chat zichtbaar gemaakt
 socket.on('chat message', (chat) => {
- addChatMessage(chat);
+    addChatMessage(chat);
 
 })
 socket.on('chat history', chatHistory => {
@@ -242,11 +242,11 @@ socket.on('user joined', (username) => {
 });
 
 // Met deze event kunnen gebruikers zien wie er online is
-socket.on('get online users', (username) => {
+socket.on('get online users', (onlineUsers) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
         let user = document.createElement('li');
-        user.innerHTML = `${onlineUsers.username} is online`;
+        user.innerHTML = `${username} is online`;
         userList.appendChild(user);
     }
 });
@@ -270,7 +270,7 @@ socket.on('stop typing', (typingUser) => {
 
 })
 
-socket.on('user has left', (onlineUsers) => { 
+socket.on('user has left', (onlineUsers) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
         let user = document.createElement('li');
@@ -282,14 +282,32 @@ socket.on('user has left', (onlineUsers) => {
 
 // kijk voor de connectie met de server elke keer of de connectie er nog is
 socket.on('connect', () => {
-    setInterval(() => {
-        if (socket.connected) {
-            console.log(' Socket is connected');
-            chat.classList.remove('socket-disconnected');
-        } else {
-            console.log('Socket is disconnected');
-            chat.classList.add('socket-disconnected');
-        }
-    }, 500)
+    checkSocketConnection();
+    setInterval(checkSocketConnection, 500);
 
 })
+
+function checkSocketConnection() {
+
+    if (socket.connected) {
+        console.log('Socket is connected');
+        chat.classList.remove('socket-disconnected');
+
+    } else {
+        console.log('Socket is disconnected');
+        chat.classList.add('socket-disconnected');
+
+        setTimeout(() => {
+
+            if (!socket.connected) {
+                const error = document.querySelector('#error');
+                error.innerText = 'You are disconnected';
+                error.classList.add('show');
+
+            }
+
+        }, 5000);
+
+    }
+
+}

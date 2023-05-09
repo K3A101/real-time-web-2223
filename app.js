@@ -8,8 +8,8 @@ const historySize = 50;
 let chatHistory = [];
 let wordDescriptionHistory = [];
 
-let onlineUsers = [];
-console.log('users', onlineUsers)
+let onlineUsers = {};
+console.log('onlineUsers', onlineUsers)
 
 // gegevens inladen
 
@@ -66,12 +66,12 @@ io.on('connection', (socket) => {
 
     socket.on('new-user', (username) => {
         console.log(`${username} has joined the chat`);
-        onlineUsers.push(username);
+        // onlineUsers.push(username);
         console.log('users', onlineUsers)
         
         //Save the username as key to access the user's socket id
-        // onlineUsers[username] = socket.id;
-        // socket['username'] = username;
+        onlineUsers[username] = socket.id;
+        socket['username'] = username;
         io.emit('new-user', username);
     })
 

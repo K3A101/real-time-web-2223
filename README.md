@@ -429,6 +429,9 @@ Dus is het kort, wanneer de gebruiker op de sendMessage button klikt, wordt beri
 ## Data Lifecycle Diagram
 ### Versie 1
 ![Data cycle Diagram versie 1](readme-images/data-cycle-diagram-v1.png)
+
+### Versie 2
+![Data cycle diagram versie 2](readme-images/data-cycle-diagram-v2.png)
 ---
 # Real time events
 Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gemaakt.

@@ -391,21 +391,20 @@ figcaption {
 /* OFLINE */
 /**********/
 .socket-disconnected {
-  border: none;
-  display: none;
+    border: none;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+
 }
 
+
+
 .socket-disconnected::before {
-  content: "You are offline";
-  display: block;
-  
-  background-color: var(--dark-teal-blue);
-  color: var(--white);
-  padding: .5em;
-  text-align: center;
-  font-weight: bold;
-  width: 30vh;
-  font-size: .8em;
+    content: "You are offline.";
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 @media (min-width: 60em) {
 
