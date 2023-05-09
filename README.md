@@ -223,6 +223,7 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 
 ## Would have
 - [ ] Een melding die aangeeft dat er geen informatie kunnen vinden van het woord.
+- [ ] Aangeven hoelaat de berichten zijn gestuurd.
 
 ## Technieken
 - [x] De gebruikersnaam pagina verbergen wanneer de gebruiker op de button klikt
@@ -245,6 +246,7 @@ Wanneer iedereen in de chat stuurt kunnen ze  normaal naar elkaar berichten stur
 
 ![Chat Functionality](readme-images/chatting-functionality.png)
 ### Een woord in de  Input invullen?
+
 
 
 ---
@@ -423,6 +425,8 @@ Dus is het kort, wanneer de gebruiker op de sendMessage button klikt, wordt beri
 ### Versie 2
 
 ## Data Lifecycle Diagram
+### Versie 1
+![Data cycle Diagram versie 1](readme-images/data-cycle-diagram-v1.png)
 ---
 # Real time events
 Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gemaakt.
@@ -473,7 +477,6 @@ socket.on('new-user', (username) => {
 De ingelogde gebruikers worden in de server opgeslagen in de onlineUser variabele. De opgeslagen gebruikers worden verstuurd onder de `get online user` event. De event word verstuurd naar alle clients. De Client luistert voor de event en zet de online gebruikers in een lijst. 
 
  ```javascript
-
  //client
  let currentUser;
 socket.emit('get online users')
@@ -492,24 +495,126 @@ socket.emit('get online users')
         userList.appendChild(user);
     }
 });
- 
- 
+ ```
 
+ ### Chat bericht - chat message event
+ De chat is helemaal opgebouwd op basis van de de woord die de gebruiker had ingevuld. Je kan met meerder mensen spreker maar je kan ook  met een woord, de  betekenis  van het woord genereren. Het gestuurde bericht wordt vanuit de client naar de server gestuurd onder de chat message event. De server stuurt de berichten naar alle clients. 
+
+ <details>
+ <summary> <h3>De code  voor de chat message event</h3></summary>
+ 
+ ```javascript
+
+ //client
+ sendMessage.addEventListener('click', (e) => {
+
+    const typingUser = currentUser;
+    e.preventDefault();
+    let word = wordInput.value;
+    fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+        // fetch('/new-word' + word)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            socket.emit('wordData', data); //DE data opgehaald van de API wordt gestuurd naar de server
+        }).catch(err => {
+            console.log(err)
+        })
+
+    if (word.length > 0) {
+
+        //Ik maak een array van object aan met de waarde van de username en de message
+        const chat = {
+            username: currentUser,
+            message: word
+        }
+        //De chat message event wordt gestuurd met de chat array als parameter
+        //De chat array bevat de username en de message
+        socket.emit('chat message', chat); //verstuurd een chat message  event naar de server met de chat object array als data
+        socket.emit('stop typing', typingUser);
+        wordInput.value = '';
+    }
+})
+
+
+ //server
+
+io.on('connection', (socket) => {
+
+    socket.on('chat message', (chat) => {
+        io.emit('chat message', chat);
+        console.log(`${chat.username}: ${chat.message}`);
+    })
+})
+
+ //client
+
+ socket.on('chat message', (chat) => {
+
+    const speechBubble = document.createElement('li');
+    speechBubble.innerHTML = `<span>${chat.username}</span>${chat.message}`;
+    console.log(`${chat.username}: ${chat.message}`);
+
+    chatContainer.appendChild(speechBubble);
+    // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
+    chat.scrollTop = chat.scrollHeight;
+
+    console.log('chat message received')
+    //Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
+    //Deze class zorgt ervoor dat de speech bubble aan de rechterkant van het scherm wordt geplaatst
+    if (chat.username === usernameInput.value) {
+        speechBubble.classList.add('own-message');
+    }
+
+})
 
  ```
 
- ### Chat bericht
- De chat is helemaal opgebouwd op basis van de de woord die de gebruiker had ingevuld. Je kan met meerder mensen spreker maar je kan ook  met een woord, betekenis  van het woord genereren. Het gestuurde bericht wordt vanuit de client naar de server gestuurd onder de chat message event. De server stuurt de berichten naar alle clients. 
+ </details>
 
- ### Gebruiker aan het typen
-Wanneer een gebruiker aan het typen is wordt `typing` event getriggered naar de event wordt gestuurd naar de server gestuurd. De server luister naar de typing event en verstuurt de bericht dat de currentgebruiker is aan het typen naar iedereen behalve degenen die het bericht had verstuurt.  
 
-### Gebruiker niet meer aan het typen
+ ### Gebruiker aan het typen - typing event
+Wanneer een gebruiker aan het typen is wordt `typing` event getriggered naar de event wordt gestuurd naar de server gestuurd. De server luister naar de typing event en verstuurt de bericht dat de `currentUser` is aan het typen naar iedereen behalve degenen die het bericht 
+had verstuurt.  
+
+```javascript
+//client
+   wordInput.addEventListener('input', (e) => {
+    let input = wordInput.value;
+    e.preventDefault();
+    const typingUser = currentUser;
+    socket.emit('typing', typingUser);
+})
+
+//server
+
+    socket.on('typing', (typingUser) => {
+        // io.emit('typing', typingUser);
+        socket.broadcast.emit('typing', typingUser);
+        console.log(`${typingUser} is typing`);
+    })
+
+
+//client
+```
+
+
+### Gebruiker niet meer aan het typen - stop typing event
+
+
 
 
 ### Gebruikers in de chat bijgekomen
+<details>
+<summary><h3>Het code voor de typing event </h3></summary>
+
+</details>
 
 ### Gebruikers uit de chat weggegaan
+<details>
+<summary><h3>Het code voor de typing event </h3></summary>
+
+</details>
 
  ### Gegenereerde woorden uit de API
  De woorden die de gebruiker typt wordt tegelijkertijd gestuurd naar de API, De API stuur de data terug naar de client en de client stuurt data naar de server met de `wordData` event. De server stuurt de data naar de clients en in de client wordt de data weergegeven. Wat wordt weergegven is de woord spelling, audio, en de betekenis. 

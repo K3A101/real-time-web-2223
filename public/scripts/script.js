@@ -18,12 +18,6 @@ const userList = document.querySelector('#user-online');
 const usernameInput = document.querySelector('#username-input');
 const userListButton = document.querySelector('.user-btn');
 
-// Variabel om het woord definitie te kopieren
-const copyBtns = document.querySelector('.copy-word-btn');
-console.log(copyBtns)
-const textToCopy = document.querySelectorAll('.word-definition');
-const copyConfirmations = document.querySelectorAll('.copied-confirmation');
-let copiedText
 
 let currentUser;
 socket.emit('get online users')
@@ -82,6 +76,7 @@ wordInput.addEventListener('input', (e) => {
 // Wanneer de gebruiker op het verstuur knop klik, wordt waarde van de input gestuurd naar de API en komt de data terug
 // Verder word de  chat message event gestuurd naar de server
 // De stop typing event wordt gestuurd naar de server
+
 sendMessage.addEventListener('click', (e) => {
 
     const typingUser = currentUser;
@@ -153,27 +148,41 @@ function displayData(data) {
     </li>`
 
     wordsDictionarySection.insertAdjacentHTML('beforeend', html);
+    
+
+    const copyBtns = document.querySelectorAll('.word button.copy-word-btn');
+    console.log("copyBtns", wordsDictionarySection, copyBtns)
 
 }
 
+
+
+socket.on('wordData', (data) => {
+    console.log(data);
+    displayData(data)
+
+    wordsDictionarySection.scrollTop = wordsDictionarySection.scrollHeight;
+
+})
 // ------------------- HET DEFINITIE KOPIEREM -------------------
+
+// Variabel om het woord definitie te kopieren
+
+const textToCopy = document.querySelectorAll('.word-definition');
+const copyConfirmations = document.querySelectorAll('.copied-confirmation');
+let copiedText
+
 // for (let i = 0; i < copyBtns.length; i++) {
 //    copyBtns[i].addEventListener('click', () => {
 //        navigator.clipboard.writeText(textToCopy[i].innerText);
 //        copiedText = textToCopy[i].innerText;
 //          console.log(copiedText);
 //    })
-    
+
 // }
 
 // ----------------- SOCKET REALTIME EVENTS ----------------- //
 // wanneer de server de wordData event stuurt, wordt de data in de displayData functie geplaatst
-socket.on('wordData', (data) => {
-    console.log(data);
-    displayData(data)
-    data.scrollTop = data.scrollHeight;
-
-})
 //Hier word de berichten in de chat zichtbaar gemaakt
 socket.on('chat message', (chat) => {
 
@@ -183,7 +192,7 @@ socket.on('chat message', (chat) => {
 
     chatContainer.appendChild(speechBubble);
     // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
-    chat.scrollTop = chat.scrollHeight;
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 
     console.log('chat message received')
     //Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
@@ -192,7 +201,7 @@ socket.on('chat message', (chat) => {
         speechBubble.classList.add('own-message');
     }
 
-    
+
 
 })
 
@@ -229,7 +238,7 @@ socket.on('typing', (typingUser) => {
     typingIndicator.innerHTML = `${typingUser} is typing...`;
     console.log(`${typingUser} is typing...`);
     console.log('User is typing')
-   
+
 
 })
 
@@ -254,10 +263,10 @@ socket.on('user has left', (onlineUsers) => {
 // kijk voor de connectie met de server elke keer of de connectie er nog is
 socket.on('connect', () => {
     setInterval(() => {
-        if(socket.connected){
+        if (socket.connected) {
             console.log(' Socket is connected');
             chat.classList.remove('socket-disconnected');
-        }else{
+        } else {
             console.log('Socket is disconnected');
             chat.classList.add('socket-disconnected');
         }

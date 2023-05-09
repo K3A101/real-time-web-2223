@@ -283,7 +283,7 @@ figcaption {
 #chat-messages {
     display: flex;
     flex-direction: column;
-    height: 80%;
+    height: 10em;
     width: 100%;
     padding: 1em;
     overflow-y: scroll;
@@ -415,6 +415,9 @@ figcaption {
 
     }
 
+    #chat-messages {
+        height: 80%;
+    }
 
     .user-container {
         position: fixed;
