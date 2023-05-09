@@ -270,7 +270,7 @@ socket.on('stop typing', (typingUser) => {
 
 })
 
-socket.on('user has left', (onlineUsers) => {
+socket.on('user has left', (username) => { 
     userList.innerHTML = '';
     for (username in onlineUsers) {
         let user = document.createElement('li');

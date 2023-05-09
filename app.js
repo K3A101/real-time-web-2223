@@ -9,6 +9,7 @@ let chatHistory = [];
 let wordDescriptionHistory = [];
 
 let onlineUsers = {};
+console.log('users', onlineUsers)
 
 // gegevens inladen
 
@@ -88,10 +89,11 @@ io.on('connection', (socket) => {
     console.log(socket.rooms)
 
     socket.on('disconnect', () => {
-        delete onlineUsers[socket.username]
-        io.emit('user has left', onlineUsers);
+        let username = socket.username;
+        delete onlineUsers[username]
+        io.emit('user has left', username);
         console.log(` A user disconnected`);
-    });
+    }); 
 })
 
 
