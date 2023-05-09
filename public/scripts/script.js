@@ -242,11 +242,11 @@ socket.on('user joined', (username) => {
 });
 
 // Met deze event kunnen gebruikers zien wie er online is
-socket.on('get online users', (onlineUsers) => {
+socket.on('get online users', (username) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
         let user = document.createElement('li');
-        user.innerHTML = `${username} is online`;
+        user.innerHTML = `${onlineUsers.username} is online`;
         userList.appendChild(user);
     }
 });
@@ -270,7 +270,7 @@ socket.on('stop typing', (typingUser) => {
 
 })
 
-socket.on('user has left', (username) => { 
+socket.on('user has left', (onlineUsers) => { 
     userList.innerHTML = '';
     for (username in onlineUsers) {
         let user = document.createElement('li');

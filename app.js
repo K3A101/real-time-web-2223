@@ -8,7 +8,7 @@ const historySize = 50;
 let chatHistory = [];
 let wordDescriptionHistory = [];
 
-let onlineUsers = {};
+let onlineUsers = [];
 console.log('users', onlineUsers)
 
 // gegevens inladen
@@ -66,9 +66,12 @@ io.on('connection', (socket) => {
 
     socket.on('new-user', (username) => {
         console.log(`${username} has joined the chat`);
+        onlineUsers.push(username);
+        console.log('users', onlineUsers)
+        
         //Save the username as key to access the user's socket id
-        onlineUsers[username] = socket.id;
-        socket['username'] = username;
+        // onlineUsers[username] = socket.id;
+        // socket['username'] = username;
         io.emit('new-user', username);
     })
 
@@ -91,7 +94,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         let username = socket.username;
         delete onlineUsers[username]
-        io.emit('user has left', username);
+        io.emit('user has left', onlineUsers);
         console.log(` A user disconnected`);
     }); 
 })
