@@ -247,9 +247,11 @@ Je gaat naar de chatpagina en het eerste wat je ziet is een bericht dat je bij i
 Wanneer iedereen in de chat stuurt kunnen ze  normaal naar elkaar berichten sturen. 
 
 ![Chat Functionality](readme-images/chatting-functionality.png)
-### Een woord in de  Input invullen?
 
+### Definitie van het woord genereren
+Naast dat je met elkaar berichten kunnen sturen, kun je de definitie van het woord krijgen. Om dit functionaliteit te gebruiken moet je een word in de chat versturen, na enkele seconde komen het definitie van het woord tevoorschijn. Als je het wilt kun je de betekenis  van het woord kopieren.
 
+![Chat Functionality](readme-images/generate-words.png)
 
 ---
 # API
@@ -435,12 +437,33 @@ Dus is het kort, wanneer de gebruiker op de sendMessage button klikt, wordt beri
 ---
 # Real time events
 Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gemaakt.
- 
- ### Nieuwe gebruiker
+- `new-user` Event wordt uigevoerd Wanneer de gebruiker een nieuwe gebruiker aanmaakt
+- `user joined` Event die aangeeft dat een user is in de chat bijgekomen
+- `get online users` Met deze event worden de aangemelde gebruikers in de server opgeslagen in een lijst komen te staan.
+- `typing` Event die laat zien dat een gebruiker aan het typen is.
+- `stop typing` Event wanneer  de gebruiker gestopt is met typen
+- `wordData` Event die de API data wordt naar de server gestuurd om dan naar alle clients te sturen
+- `chat message` Event waar de gebrikers met elkaar berichten kan sturen in een chat room
+- `chat history` Maximaal 50 berichten worden opgeslagen, de nieuwe gebruikers die nog binnen komen kunnen alsnog de oude berichten zien. 
+- `word descripton history` geld ook bij de woord definities, maximaal 50 stukjes worden in de server bewaard. 
+- `connect` De event ga checken of de applicatie verbinding heeft met de server. Als er geen verbinding is word een bericht getsuurd naar de gebruikers dat hij offline is. 
+
+ ## Real time event 
+<details>
+<summary>new-user</summary>
+
+### Nieuwe gebruiker
+
+### Socket event: New user
+Hier ga de gebruiker een gebruikersnaam aanmaken. Wanner ze op de knop klikt, wordt twee events naar de server gestuurd. Met de user joined event wordt het zichtbaar voor de gebruiker wie in de chat is aangekomen. 
 Wanneer een nieuwe gebruiker in de chat komt wordt de `new user` event gestuurd van de client naar de server. De server  luistert naar de `new user` event en als er een nieuwe gebruiker een username geeft, wordt de event naar alle clients gestuurd dat er een gebruiker is erij gekomen.
 
+#### Client
 ```javascript
 //client
+const usernameForm = document.querySelector('.username-form');
+const usernameInput = document.querySelector('#username-input');
+let currentUser;
 // event wordt verstuurd naar de server
 createUserBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -459,6 +482,19 @@ createUserBtn.addEventListener('click', (e) => {
 
 });
 
+//client 
+socket.on('new-user', (username) => {
+    console.log(username + ' has joined the chat');
+    let user = document.createElement('li');
+    user.innerHTML = `${username}`;
+    userList.appendChild(user);
+});
+
+```
+#### Server
+```javascript
+let onlineUsers = {};
+console.log('onlineUsers', onlineUsers)
 // server
     socket.on('new-user', (username) => {
         console.log(`${username} has joined the chat`);
@@ -467,32 +503,83 @@ createUserBtn.addEventListener('click', (e) => {
         socket['username'] = username;
         io.emit('new-user', username);
     })
-
-
-//client 
-socket.on('new-user', (username) => {
-    console.log(username + ' has joined the chat');
-    let user = document.createElement('li');
-    user.innerHTML = `${username}`;
-    userList.appendChild(user);
-});
 ```
 
-### Online gebruikers 
-De ingelogde gebruikers worden in de server opgeslagen in de onlineUser variabele. De opgeslagen gebruikers worden verstuurd onder de `get online user` event. De event word verstuurd naar alle clients. De Client luistert voor de event en zet de online gebruikers in een lijst. 
 
- ```javascript
- //client
- let currentUser;
-socket.emit('get online users')
-//server
-     socket.on('get online users', () => {
-        //Send over the onlineUsers
-        socket.emit('get online users', onlineUsers);
+</details>
+
+<details>
+<summary>user joined</summary>
+
+### User is bijgekomen
+
+#### Socket event: user joined
+Dit event wordt uitgevoerd naast de new user event. Wanneer de gebruiker een naam heeft gemaakt,  wordt hij verstuurd naar de chat room. Iedereen die al in de chat room zijn krijgen een melding dat een nieuwe gebruiker is bijgekomen. 
+
+#### client 
+```javascript
+const createUserBtn = document.querySelector('#create-user-btn');
+const usernameForm = document.querySelector('.username-form');
+const usernameInput = document.querySelector('#username-input');
+let currentUser;
+
+createUserBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    backBtn.classList.remove('hide-back-btn');
+    // const usernameInput = document.querySelector('#username-input');
+    const username = usernameInput.value.trim();
+    if (username.length > 0) {
+        socket.emit('new-user', username);
+        socket.emit('user joined', username);
+        currentUser = username;
+        usernameForm.classList.add('hidden');
+        chat.classList.remove('hidden');
+    }
+
+    console.log('New user created')
+
+});
+
+socket.on('user joined', (username) => {
+    console.log(username + ' has joined the chat');
+    let user = document.createElement('li');
+    user.innerHTML = `${username} has joined the chat`;
+    chatContainer.appendChild(user);
+});
+
+
+```
+#### Server
+```javascript
+let onlineUsers = {};
+console.log('onlineUsers', onlineUsers)
+
+socket.on('user joined', (username) => {
+        console.log(`${username} has joined the chat`);
+        //Save the username as key to access the user's socket id
+        onlineUsers[username] = socket.id;
+        socket['username'] = username;
+        io.emit('user joined', username);
     })
+```
+</details> 
 
-//client
- socket.on('get online users', (onlineUsers) => {
+<details>
+<summary>Get online users</summary>
+
+### Lijst met alle online gebruikers
+
+#### Socket event: get online users
+De gebruikers met een naam worden dan opgeslagen naar de server onder de get online event. De Opgeslagen gebruikersnamen worden vanuit de server opgehaald en naar de client toegestuurd. Dus wanneer de gebruiker naar de homepagina komt, kunnen ze alle online gebruikers zien die momenteel in de chat zijn. 
+
+#### client
+```javascript
+const userList = document.querySelector('#user-online');
+let currentUser;
+socket.emit('get online users')
+
+
+socket.on('get online users', (onlineUsers) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
         let user = document.createElement('li');
@@ -500,18 +587,73 @@ socket.emit('get online users')
         userList.appendChild(user);
     }
 });
- ```
 
- ### Chat bericht - chat message event
- De chat is helemaal opgebouwd op basis van de de woord die de gebruiker had ingevuld. Je kan met meerder mensen spreker maar je kan ook  met een woord, de  betekenis  van het woord genereren. Het gestuurde bericht wordt vanuit de client naar de server gestuurd onder de chat message event. De server stuurt de berichten naar alle clients. 
+```
+#### Server
+```javascript
+let onlineUsers = {};
+console.log('onlineUsers', onlineUsers)
 
- <details>
- <summary> <h3>De code  voor de chat message event</h3></summary>
- 
- ```javascript
+socket.on('get online users', () => {
+//Send over the onlineUsers
+socket.emit('get online users', onlineUsers);
+})
 
- //client
- sendMessage.addEventListener('click', (e) => {
+
+```
+</details> 
+<details>
+<summary>typing</summary>
+
+### Gebruiker is aan het typen
+
+#### Socket event: typing
+Dit is een event die aangeeft welke gebruiker een bericht aan het typen is. Ik heb een variabele `typingUser`gemaakt dat de huidige client dus mijn client opslaan. Dus de aangemaakte gebruikersnaam wordt gekoppeld met nieuwe variabele. Dus wanneer de gebruiker begint met typen wordt de typing event getriggerd en naar de server gestuurd. In de server word de typing event gestuurd naar alle gebruikers behalve degene die aan het typen is. 
+
+#### Client
+```javascript
+const wordInput = document.querySelector('#word-input');
+let currentUser;
+socket.emit('get online users')
+
+wordInput.addEventListener('input', (e) => {
+    let input = wordInput.value;
+    e.preventDefault();
+    const typingUser = currentUser;
+    socket.emit('typing', typingUser);
+})
+
+socket.on('typing', (typingUser) => {
+
+    // const typingIndicator = document.createElement('div');
+    typingIndicator.innerHTML = `${typingUser} is typing...`;
+    console.log(`${typingUser} is typing...`);
+    console.log('User is typing')
+})
+```
+
+#### Server
+```javascript
+   socket.on('typing', (typingUser) => {
+        // io.emit('typing', typingUser);
+        socket.broadcast.emit('typing', typingUser);
+        console.log(`${typingUser} is typing`);
+    })
+
+```
+</details> 
+<details>
+<summary>Stop typing</summary>
+
+### Gebruiker is niet meer aan het typen
+
+#### Socket event: stop typing
+Zoals je tijdens het een chatten, een melding zien dat een andere gebruiker aan het typen is, kun je met de `stop typing `event zien dat een gebruiker is gestopt met schrijven. Dus wanneer de gebruiker het bericht verstuurt ga de *user is typing* weg. Dit event wordt gestuurd naar alle gebruikers in de chat behalve degene die aan het typen was. 
+
+#### Client
+```javascript
+const sendMessage = document.querySelector('#submit-button');
+sendMessage.addEventListener('click', (e) => {
 
     const typingUser = currentUser;
     e.preventDefault();
@@ -541,28 +683,84 @@ socket.emit('get online users')
     }
 })
 
+socket.on('stop typing', (typingUser) => {
+    typingIndicator.innerHTML = '';
+    console.log(`${typingUser} has stopped typing...`);
+    console.log('User has stopped typing');
 
- //server
-
-io.on('connection', (socket) => {
-
-    socket.on('chat message', (chat) => {
-        io.emit('chat message', chat);
-        console.log(`${chat.username}: ${chat.message}`);
-    })
 })
 
- //client
 
- socket.on('chat message', (chat) => {
+```
+#### Server 
 
+```javascript
+    socket.on('stop typing', (typingUser) => {
+        // io.emit('typing', typingUser);
+        socket.broadcast.emit('stop typing', typingUser);
+        console.log(`${typingUser} stopped typing`);
+    })
+
+
+```
+</details>
+<details>
+<summary>Chat message</summary>
+
+###  De chat, de core onderdeel van dit applicatie
+
+#### Socket event: chat message
+De chat message event is de basis van de hele applicatie, verschillende gebruikers met elkaar communiceren in chat room. Per bericht kunnen  alle gebruikers zien wie de zender van het bericht is. In het event wordt de berichten en de zender naar de server gestuurd. En via de server wordt het met socket.io verstuurd naar alle gebruikers die in de chat zijn. 
+
+Wat ik hier doe is ik sla de waarde van wat er ingetypt is op in `word`. Wanneer er er meer dan 1 dingen ingetypt wordt en de gebruiker op de verstuur knop klikt, ga de waarde naar de server toe onder de chat message event. 
+
+#### client
+```javascript
+const wordInput = document.querySelector('#word-input');
+const sendMessage = document.querySelector('#submit-button');
+sendMessage.addEventListener('click', (e) => {
+
+    const typingUser = currentUser;
+    e.preventDefault();
+    let word = wordInput.value;
+    fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+        // fetch('/new-word' + word)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            socket.emit('wordData', data); //DE data opgehaald van de API wordt gestuurd naar de server
+        }).catch(err => {
+            console.log(err)
+        })
+
+    if (word.length > 0) {
+
+        //Ik maak een array van object aan met de waarde van de username en de message
+        const chat = {
+            username: currentUser,
+            message: word
+        }
+        //De chat message event wordt gestuurd met de chat array als parameter
+        //De chat array bevat de username en de message
+        socket.emit('chat message', chat); //verstuurd een chat message  event naar de server met de chat object array als data
+        socket.emit('stop typing', typingUser);
+        wordInput.value = '';
+    }
+})
+
+socket.on('chat message', (chat) => {
+    addChatMessage(chat);
+
+})
+
+function addChatMessage(chat) {
     const speechBubble = document.createElement('li');
     speechBubble.innerHTML = `<span>${chat.username}</span>${chat.message}`;
     console.log(`${chat.username}: ${chat.message}`);
 
     chatContainer.appendChild(speechBubble);
     // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
-    chat.scrollTop = chat.scrollHeight;
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 
     console.log('chat message received')
     //Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
@@ -570,56 +768,40 @@ io.on('connection', (socket) => {
     if (chat.username === usernameInput.value) {
         speechBubble.classList.add('own-message');
     }
+}
 
-})
-
- ```
-
- </details>
-
-
- ### Gebruiker aan het typen - typing event
-Wanneer een gebruiker aan het typen is wordt `typing` event getriggered naar de event wordt gestuurd naar de server gestuurd. De server luister naar de typing event en verstuurt de bericht dat de `currentUser` is aan het typen naar iedereen behalve degenen die het bericht 
-had verstuurt.  
-
-```javascript
-//client
-   wordInput.addEventListener('input', (e) => {
-    let input = wordInput.value;
-    e.preventDefault();
-    const typingUser = currentUser;
-    socket.emit('typing', typingUser);
-})
-
-//server
-
-    socket.on('typing', (typingUser) => {
-        // io.emit('typing', typingUser);
-        socket.broadcast.emit('typing', typingUser);
-        console.log(`${typingUser} is typing`);
-    })
-
-
-//client
 ```
 
+### server
+```javascript
+    socket.on('chat message', (chat) => {
 
-### Gebruiker niet meer aan het typen - stop typing event
+        while (chatHistory.length >= historySize) {
+            chatHistory.shift();
+        }
+        chatHistory.push(chat);
 
+        io.emit('chat message', chat);
+        console.log(`${chat.username}: ${chat.message}`);
+    })
 
-
-
-### Gebruikers in de chat bijgekomen
+```
+</details>
 <details>
-<summary><h3>Het code voor de typing event </h3></summary>
-
+    <summary>Chat History</summary>
+</details>
+<details>
+    <summary>wordData</summary>
+</details> 
+<details>
+    <summary>Word Description History</summary>
+  </details>
+<details>
+    <summary>Word Description History</summary>
 </details>
 
-### Gebruikers uit de chat weggegaan
-<details>
-<summary><h3>Het code voor de typing event </h3></summary>
 
-</details>
+
 
  ### Gegenereerde woorden uit de API
  De woorden die de gebruiker typt wordt tegelijkertijd gestuurd naar de API, De API stuur de data terug naar de client en de client stuurt data naar de server met de `wordData` event. De server stuurt de data naar de clients en in de client wordt de data weergegeven. Wat wordt weergegven is de woord spelling, audio, en de betekenis. 

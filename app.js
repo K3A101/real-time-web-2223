@@ -89,7 +89,6 @@ io.on('connection', (socket) => {
 
 
     console.log('A user connected');
-    console.log(socket.rooms)
 
     socket.on('disconnect', () => {
         let username = socket.username;
