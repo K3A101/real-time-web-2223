@@ -39,6 +39,13 @@ Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen
 - adaptable.io
 - raillway.app
 
+
+### NPM  Dependencies
+- Nodemon
+- Express
+- socket.io 
+- ejs
+
 ### Clone repository
 
     git clone https://github.com/K3A101/css-to-the-rescue-2223.git
@@ -182,6 +189,8 @@ Het laatste concept is een app waar mensen gezamenlijk review kan geven over een
 ---
 # Het concept
 ## Dictionary generator chat
+Dictionary cahat oftewel DictoChat is een chat applicatie waar een groep mensen met elkaar kan praten in een chatroom. Ook knnen ze een betekenis van het woord genereren. 
+
 Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel een beetje aangepast. Wat het inhoudt is dat  groep mensen komen in een chatroom terecht en dan kunnen ze op basis van een woord die ze hebben ingevuld een overzicht maken met woordenboek eigenschappen. In principe is de woordenboek generator een chat waar gebruikers met elkaar kunnen praten maar teglijkertijd de betekenis wan het woord zien. Aan de zijkant staat de gebruikerslijst. In de lijst staan alle gebruikers die aangemeld zijn in de Chat. Verder kunnen anderen zien wie momemnteel online is. 
 
 ## Schetsen
@@ -774,6 +783,7 @@ function addChatMessage(chat) {
 
 ### server
 ```javascript
+
     socket.on('chat message', (chat) => {
 
         while (chatHistory.length >= historySize) {
@@ -789,22 +799,356 @@ function addChatMessage(chat) {
 </details>
 <details>
     <summary>Chat History</summary>
+
+### Oude berichten
+
+#### Socket event: Chat History
+Dit event zorgt ervoor dat er maximaal 50 berichten opgeslagen worden in de server. Het voordeel hiervan is dat nieuwe gebruiker die later in het chat zijn bijgekomen, kunnen als nog oude berichten zien. In de server heb ik in de historySize de hoeveelheid berichten wil ik opslaan en een lege chat history array om de berichten daarin te bewaren. Vanuit de server wordt de chat history event naar de clients gestuurd.
+
+#### Client
+
+```javascript
+socket.on('chat history', chatHistory => {
+    chatHistory.forEach(chat => {
+        addChatMessage(chat);
+    })
+})
+
+
+function addChatMessage(chat) {
+    const speechBubble = document.createElement('li');
+    speechBubble.innerHTML = `<span>${chat.username}</span>${chat.message}`;
+    console.log(`${chat.username}: ${chat.message}`);
+
+    chatContainer.appendChild(speechBubble);
+    // De scroll wordt naar beneden gezet zodat de laatste berichten zichtbaar zijn
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    console.log('chat message received')
+    //Als de username van de chat message gelijk is aan de username van de input dan wordt de class 'own-message' toegevoegd
+    //Deze class zorgt ervoor dat de speech bubble aan de rechterkant van het scherm wordt geplaatst
+    if (chat.username === usernameInput.value) {
+        speechBubble.classList.add('own-message');
+    }
+}
+
+```
+
+#### Server
+
+```javascript
+const historySize = 50;
+let chatHistory = [];
+
+    socket.on('chat message', (chat) => {
+
+        while (chatHistory.length >= historySize) {
+            chatHistory.shift();
+        }
+        chatHistory.push(chat);
+
+        io.emit('chat message', chat);
+        console.log(`${chat.username}: ${chat.message}`);
+    })
+
+```
+
 </details>
 <details>
-    <summary>wordData</summary>
+    <summary>wordData</summary> 
+	
+### Gegenereerde woorden uit de API
+
+#### Socket event: wordData
+ De woorden die de gebruiker typt wordt tegelijkertijd gestuurd naar de API, De API stuur de data terug naar de client en de client stuurt data naar de server met de `wordData` event. De server stuurt de data naar de clients en in de client wordt de data weergegeven. Wat wordt weergegven is de woord spelling, audio, en het definitie. Niet alle woorden kunnen gegenereerd worden dus de fallback is dat het een gewone chat wordt. 
+
+ #### client
+```javascript
+const wordInput = document.querySelector('#word-input');
+const sendMessage = document.querySelector('#submit-button');
+sendMessage.addEventListener('click', (e) => {
+
+    const typingUser = currentUser;
+    e.preventDefault();
+    let word = wordInput.value;
+    fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + word)
+        // fetch('/new-word' + word)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            socket.emit('wordData', data); //DE data opgehaald van de API wordt gestuurd naar de server
+        }).catch(err => {
+            console.log(err)
+        })
+
+    if (word.length > 0) {
+
+        //Ik maak een array van object aan met de waarde van de username en de message
+        const chat = {
+            username: currentUser,
+            message: word
+        }
+        //De chat message event wordt gestuurd met de chat array als parameter
+        //De chat array bevat de username en de message
+        socket.emit('chat message', chat); //verstuurd een chat message  event naar de server met de chat object array als data
+        socket.emit('stop typing', typingUser);
+        wordInput.value = '';
+    }
+})
+
+function displayData(data) {
+    const randomIndex = Math.floor(Math.random() * data[0].meanings[0]?.definitions.length);
+    const definition = data[0].meanings[0]?.definitions[randomIndex].definition || 'No definition available';
+    const word = data[0].word;
+    let audioUrl = 'No audio available'; // Als er geen audio beschikbaar is, wordt de audioUrl op 'No audio available' gezet
+
+    for (let i = 0; i < data[0].phonetics.length; i++) {
+        if (data[0].phonetics[i].audio) {
+            audioUrl = data[0].phonetics[i].audio;
+            break;
+        }
+    }
+
+    let phonetics = 'No phonetics available'
+    for (let t = 0; t < data[0].phonetics.length; t++) {
+        if (data[0].phonetics[t].text) {
+            phonetics = data[0].phonetics[t].text || data[0].phonetic;
+            break;
+        }
+    }
+
+    let html = '';
+
+    html = `
+    <li class="word">
+         <h2>${word}</h2>
+         <p>${phonetics}</p>  
+        <audio
+         controls
+            <source src="${audioUrl}" type="mp3/ogg">
+        </audio>
+       <figcaption>${audioUrl}</figcaption>
+       <p class="word-definition">${definition}</p>
+       <button class="copy-word-btn">Copy the description</button>
+       <div class="copied-confirmation"></div>
+    </li>`
+
+    wordsDictionarySection.insertAdjacentHTML('beforeend', html);
+
+    copyText();
+
+}
+
+
+socket.on('wordData', (data) => {
+    console.log(data);
+    displayData(data)
+
+    wordsDictionarySection.scrollTop = wordsDictionarySection.scrollHeight;
+
+})
+
+```
+
+#### Server
+
+```javascript
+ socket.on('wordData', (data) => {
+        io.emit('wordData', data);
+
+        while (wordDescriptionHistory.length >= historySize) {
+            wordDescriptionHistory.shift();
+        }
+        wordDescriptionHistory.push(data);
+        console.log(data);
+    })
+
+
+```
 </details> 
 <details>
-    <summary>Word Description History</summary>
-  </details>
+<summary>Word Description History</summary>
+
+### Eerdere opgeslagen woord definities
+
+#### Socket event: Word description history
+Dit event zorgt ervoor dat er maximaal 50 woord definities opgeslagen worden in de server. Het voordelen hiervan is dat nieuwe gebruiker die later in het chat zijn bijgekomen, kunnen als nog eerder gegenereerde defiities zien. In de server heb ik in de historySize de hoeveelheid definities wil ik opslaan en een lege `word description history`array gemaakt om de difinities daarin te bewaren. Vanuit de server wordt de `word description history` history event gestuurd naar de client. In de client wordt de eerste 49 stukjes bewaard. Ouder dan dat gaan ze vanzelf weg. 
+#### Client
+```javascript
+
+function displayData(data) {
+    const randomIndex = Math.floor(Math.random() * data[0].meanings[0]?.definitions.length);
+    const definition = data[0].meanings[0]?.definitions[randomIndex].definition || 'No definition available';
+    const word = data[0].word;
+    let audioUrl = 'No audio available'; // Als er geen audio beschikbaar is, wordt de audioUrl op 'No audio available' gezet
+
+    for (let i = 0; i < data[0].phonetics.length; i++) {
+        if (data[0].phonetics[i].audio) {
+            audioUrl = data[0].phonetics[i].audio;
+            break;
+        }
+    }
+
+    let phonetics = 'No phonetics available'
+    for (let t = 0; t < data[0].phonetics.length; t++) {
+        if (data[0].phonetics[t].text) {
+            phonetics = data[0].phonetics[t].text || data[0].phonetic;
+            break;
+        }
+    }
+
+    let html = '';
+
+    html = `
+    <li class="word">
+         <h2>${word}</h2>
+         <p>${phonetics}</p>  
+        <audio
+         controls
+            <source src="${audioUrl}" type="mp3/ogg">
+        </audio>
+       <figcaption>${audioUrl}</figcaption>
+       <p class="word-definition">${definition}</p>
+       <button class="copy-word-btn">Copy the description</button>
+       <div class="copied-confirmation"></div>
+    </li>`
+
+    wordsDictionarySection.insertAdjacentHTML('beforeend', html);
+
+    copyText();
+
+}
+
+socket.on('word description history', wordDescriptionHistory => {
+    wordDescriptionHistory.forEach(data => {
+        displayData(data);
+    })
+})
+```
+
+#### Server 
+```javascript
+const historySize = 50;
+let wordDescriptionHistory = [];
+ socket.on('wordData', (data) => {
+        io.emit('wordData', data);
+
+        while (wordDescriptionHistory.length >= historySize) {
+            wordDescriptionHistory.shift();
+        }
+        wordDescriptionHistory.push(data);
+        console.log(data);
+    })
+
+
+```
+</details>
 <details>
-    <summary>Word Description History</summary>
+<summary>Users has left</summary>
+
+### Gebruiker heeft de chat verlaten
+
+#### Socket event: user has left
+Je bent klaar met chatten en je gaat offline. Dan word de disconnect event uit de server uitgevoerd. Wanneer een gebruiker weggaat, wordt alle gebruikers uit de chat weggehaald. Als ik tijd had zou ik alleen de offline gebruiker uit de online lijst. In de chat krijg je een melding welke gebruikers uit de chat zijn gegaan. 
+
+#### Client
+```javascript
+const chatContainer = document.querySelector('#chat-messages');
+
+
+socket.on('user has left', (onlineUsers) => {
+    userList.innerHTML = '';
+    for (username in onlineUsers) {
+        let user = document.createElement('li');
+        user.innerHTML = `${username} has left the chat`;
+        chatContainer.appendChild(user);
+
+    }
+});
+
+
+```
+
+#### Server
+```javascript
+let onlineUsers = {};
+console.log('onlineUsers', onlineUsers)
+
+    socket.on('disconnect', () => {
+        let username = socket.username;
+        delete onlineUsers[username]
+        io.emit('user has left', onlineUsers);
+        console.log(` A user disconnected`);
+    }); 
+```
+</details>
+<details>
+<summary>Connect</summary>
+
+### Geen verbinding  met de server
+
+#### Socket event: Connect
+Met deze event wordt na elke miliseconde in de client gechekt of er verbinding is met de server. Als de verbinding uitvalt, wordt een bericht dat de gebruiker in de hoogte brengen dat hij offline is. Wanneer de werbinding terug komt gaat de class weg. 
+
+#### Client
+```javascript
+
+socket.on('connect', () => {
+    checkSocketConnection();
+    setInterval(checkSocketConnection, 500);
+
+})
+
+function checkSocketConnection() {
+
+    if (socket.connected) {
+        console.log('Socket is connected');
+        chat.classList.remove('socket-disconnected');
+
+    } else {
+        console.log('Socket is disconnected');
+        chat.classList.add('socket-disconnected');
+
+        setTimeout(() => {
+
+            if (!socket.connected) {
+                const error = document.querySelector('#error');
+                error.innerText = 'You are disconnected';
+                error.classList.add('show');
+
+            }
+
+        }, 5000);
+
+    }
+
+}
+
+```
+
+```css
+.socket-disconnected {
+    border: none;
+    padding: 10px;
+    background-color: #f8d7da;
+    color: #721c24;
+
+}
+
+.socket-disconnected::before {
+    content: "You are offline.";
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+```
+
 </details>
 
 
 
 
- ### Gegenereerde woorden uit de API
- De woorden die de gebruiker typt wordt tegelijkertijd gestuurd naar de API, De API stuur de data terug naar de client en de client stuurt data naar de server met de `wordData` event. De server stuurt de data naar de clients en in de client wordt de data weergegeven. Wat wordt weergegven is de woord spelling, audio, en de betekenis. 
+
  
 ---
 
