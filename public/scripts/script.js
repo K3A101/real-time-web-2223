@@ -10,6 +10,7 @@ const typingIndicator = document.querySelector('.feedback');
 const chat = document.querySelector('.chat');
 const wordInput = document.querySelector('#word-input');
 const backBtn = document.querySelector('#back-btn');
+const networkError = document.querySelector('.error-message');
 
 // Variabel voor het maken van een gebruikersnaam
 const createUserBtn = document.querySelector('#create-user-btn');
@@ -143,7 +144,7 @@ function displayData(data) {
         </audio>
        <figcaption>${audioUrl}</figcaption>
        <p class="word-definition">${definition}</p>
-       <button class="copy-word-btn">Copy the description</button>
+       <button class="copy-word-btn">Copy the definition</button>
        <div class="copied-confirmation"></div>
     </li>`
 
@@ -181,6 +182,7 @@ function copyText() {
     for (let i = 0; i < copyBtns.length; i++) {
         copyBtns[i].addEventListener('click', () => {
             navigator.clipboard.writeText(textToCopy[i].innerText);
+            copyConfirmations[i].innerText = 'You copied the text!';
             copiedText = textToCopy[i].innerText;
             console.log(copiedText);
         })
@@ -237,6 +239,7 @@ socket.on('new-user', (username) => {
 socket.on('user joined', (username) => {
     console.log(username + ' has joined the chat');
     let user = document.createElement('li');
+user.classList.add('user-joined-message');
     user.innerHTML = `${username} has joined the chat`;
     chatContainer.appendChild(user);
 });
@@ -255,7 +258,7 @@ socket.on('get online users', (onlineUsers) => {
 socket.on('typing', (typingUser) => {
 
     // const typingIndicator = document.createElement('div');
-    typingIndicator.innerHTML = `${typingUser} is typing...`;
+    typingIndicator.innerHTML = `<span>${typingUser}</span> is typing...`;
     console.log(`${typingUser} is typing...`);
     console.log('User is typing')
 
@@ -291,11 +294,14 @@ function checkSocketConnection() {
 
     if (socket.connected) {
         console.log('Socket is connected');
-        chat.classList.remove('socket-disconnected');
+        networkError.classList.remove('socket-disconnected');
 
     } else {
         console.log('Socket is disconnected');
-        chat.classList.add('socket-disconnected');
+        networkError.innerHTML = ` 
+        <h2 class="hit-the-floor">404</h2>
+        <p> <b>Your are offline</b> <br> You are offline, please check your internet connection</p>`;
+        networkError.classList.add('socket-disconnected');
 
         setTimeout(() => {
 

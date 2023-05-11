@@ -4,18 +4,19 @@
   <%- include('./partials/head')  %>
 </head>
 <body>
-    
+    <div class="loader"></div>
     
     <header> 
       <h1>DictoChat</h1>
     </header>
     <main>
+      <div class="error-message"></div>
       <section class="login">
         
         <form class="username-form">
-        
+       
 
-          <h2>Enter your username:</h2>
+          <h2>Enter your nickname:</h2>
           <label for="username">Username</label>
           <input type="text" id="username-input" name="username" placeholder="Username" value="" autocomplete="off">
           <button id="create-user-btn">Join Chat</button>
@@ -44,7 +45,6 @@
               <button type="submit" id="submit-button">Send</button>
             </form>
           </div>
-
         </article>
         
       </section>

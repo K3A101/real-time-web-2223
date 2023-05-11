@@ -140,8 +140,19 @@ header h1 {
     /* left: 50em; */
     right: calc(-1 * var(--btn-width));
     top: 3em;
-   
 
+
+}
+
+/***************/
+/* BACK BUTTON */
+/***************/
+#chat-messages li.user-joined-message {
+    background-color: #D4EFF3;
+    color: var(--darkest-teal-blue);
+    font-weight: bold;
+    text-align: center;
+    align-self: center;
 }
 
 #back-btn {
@@ -151,16 +162,17 @@ header h1 {
     /* left: 50em; */
     right: calc(-1 * var(--btn-width));
     top: 6em;
-    
+
 }
 
-#back-btn, .user-btn {
-   border: none;
-   background-color: var(--dark-teal-blue);
-   color: var(--white);
-   padding: .5em 1em;
-   font-weight: bold;
-   cursor: pointer;
+#back-btn,
+.user-btn {
+    border: none;
+    background-color: var(--dark-teal-blue);
+    color: var(--white);
+    padding: .5em 1em;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 #back-btn.hide-back-btn {
@@ -225,12 +237,14 @@ main {
     height: fit-content;
     width: 100%;
 }
+
 .word h2 {
     font-size: 2em;
     font-weight: bold;
     color: var(--dark-teal-blue);
     text-transform: capitalize;
 }
+
 /* .word h2::first-letter {
     text-transform: uppercase;
 } */
@@ -250,6 +264,7 @@ main {
     cursor: pointer;
     margin-top: .5em;
 }
+
 #words-container::-webkit-scrollbar {
     opacity: 0;
 }
@@ -257,6 +272,7 @@ main {
 figcaption {
     font-size: .8em;
 }
+
 /************/
 /* THE CHAT */
 /************/
@@ -337,6 +353,31 @@ figcaption {
     font-weight: bold;
 }
 
+/******************/
+/* USER IS TYPING */
+/******************/
+.feedback {
+margin-left: 1em;
+margin-bottom: .5em;
+animation: knippereffect 1.2s linear infinite;
+}
+
+.feedback span {
+    font-weight: bold;
+    color: var(--dark-teal-blue);
+}
+
+@keyframes knippereffect {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
 /*****************/
 /* USERNAME FORM */
 /*****************/
@@ -390,22 +431,45 @@ figcaption {
 /**********/
 /* OFLINE */
 /**********/
-.socket-disconnected {
+.error-message {
+    display: none;
+}
+
+.error-message.socket-disconnected {
+    display: block;
+    position: absolute;
+    inset: 0;
+    text-align: center;
+    z-index: 2;
     border: none;
     padding: 10px;
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: var(--light-blue);
+    color: var(--darkest-teal-blue);
 
 }
 
-
-
-.socket-disconnected::before {
-    content: "You are offline.";
-    display: block;
-    margin-bottom: 10px;
+.hit-the-floor {
+    color: var(--dark-teal-blue);
+    font-size: 12em;
     font-weight: bold;
+    font-family: Helvetica;
+    text-shadow:
+        0 1px 0 var(--darkest-teal-blue),
+        0 2px 0 var(--darkest-teal-blue),
+        0 3px 0 var(--darkest-teal-blue),
+        0 4px 0 #284f5b,
+        0 5px 0 #18343c,
+        0 6px 1px rgba(0, 0, 0, .1),
+        0 0 5px rgba(0, 0, 0, .1),
+        0 1px 3px rgba(0, 0, 0, .3),
+        0 3px 5px rgba(0, 0, 0, .2),
+        0 5px 10px rgba(0, 0, 0, .25),
+        0 10px 10px rgba(0, 0, 0, .2),
+        0 20px 20px rgba(0, 0, 0, .15);
 }
+
+
+
 @media (min-width: 60em) {
 
     /* Username form */

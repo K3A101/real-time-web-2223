@@ -10,21 +10,21 @@ Voor deze cursus moeten we een chat ontwikkelen die in real time data ontvangt e
 
 ---
 # Inhoudsopgave
-- [Het Process]()
-- [Live Demo Links]()
-- [Applicatie Installatie]()
-- [Proof of Concept]()
-  - [Idee 1: Guess the disney Character]()
-  - [Idee 2: Woordenboek generator chat]()
-  - [Idee 3: Watch together app]()
-- [Het Concept]()
-- [Dictionary  generator chat app]()
-- [Functionaliteiten]()
-- [Hoe gebruik je de App]()
-- [Free Dictionary Api]()
-- [Data Modeling]()
-- [Data Life cycle Diagram]()
-- [Real time Events]()
+- [Het Process](#het-process)
+- [Live Demo Links](#live-demo-links)
+- [Applicatie Installatie](#applicatie-installatie)
+- [Proof of Concept](#proof-of-concept)
+  - [Idee 1: Guess the disney Character](#idee-1-guess-the-disney-character)
+  - [Idee 2: Woordenboek generator chat](#idee-2-woordenboek-generator-chat)
+  - [Idee 3: Watch together app](#idee-3---watch-together-app)
+- [Het Concept](#het-concept)
+- [Dictionary  generator chat app](#dictionary-generator-chat)
+- [Functionaliteiten](#core-functionaliteiten)
+- [Hoe gebruik je de App](#hoe-gebruik-je-de-app)
+- [Free Dictionary Api](#free-dictionary-api)
+- [Data Modeling](#data-modeling)
+- [Data Life cycle Diagram](#data-lifecycle-diagram)
+- [Real time Events](#real-time-events)
 ---
 ## Applicatie installatie
 Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen. 
@@ -435,7 +435,6 @@ Dus is het kort, wanneer de gebruiker op de sendMessage button klikt, wordt beri
 ![data modeling schets versie 1](readme-images/data-modeling-schets.jpg)
 
 
-### Versie 2
 
 ## Data Lifecycle Diagram
 ### Versie 1
