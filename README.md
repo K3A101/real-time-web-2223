@@ -1,12 +1,13 @@
 # Real-Time Web 
 
 ## Het Process
-Voor deze cursus moeten we een chat ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Om te beginnen met deze cursus krijgen we de opdracht om samen als team aan de slag te gaan met het bouwen van een chatapplicatie. Zodat we een sterke basis hebben om te beginnen en dan kunnen we onze eigen functionaliteiten toevoegen om deze cursus te halen. Deze opdracht is behoorlijk tijdrovend, omdat we met dit project op maandag beginnen en de volgende dag (dinsdag) de opdracht moeten voltooien en feedback van de docenten moeten krijgen.
+Voor deze cursus moeten we een realtime applicatie  ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Ik heb technieken zoals socket.io gebruik dat ervoor zorgt dat er communicatie is tussen de server en client. Met deze techniek kan ik data real time versturen beide kanten op dezelfde tijd. 
 
 ## Live Demo Links
 <!-- 	Stabiele versie -->
-- https://real-time-web-2223-production-287b.up.railway.app/
-- https://realtime-webapp.adaptable.app/
+Ik heb mijn applicatie gehost op adaptable and railway. Maar railway is stabieler dus gebruikt die astublieft.
+- Railway: https://real-time-web-2223-production-287b.up.railway.app/
+- Adaptable: https://realtime-webapp.adaptable.app/
 
 ---
 # Inhoudsopgave
@@ -47,14 +48,17 @@ Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen
 - ejs
 
 ### Clone repository
+Om dit project te gebruiken moet je eerst dit repository clonen en in lokaal via een editor toevoegen.
 
     git clone https://github.com/K3A101/css-to-the-rescue-2223.git
 
 ### NPM Installeren
 
+Wanneer je dit project had geïnstalleerd op je eigen computer moet je in de terminal dit commando onderaan uitvoeren. Hier kan je al mijn npm dependencies installeren en kan je de applicatie starten. 
     npm install
 
-### Applicatie starten in developement
+### Server van de applicatie starten in developement
+Als je npm run dev commando uitvoert, kun je de server starter op localhost http://localhost:4242
 
     npm run dev
 
@@ -149,6 +153,7 @@ Wat is een proof-of-concept. Proof of concept is een ontwerpmethode waarbij je n
 Voor mijn eerste idee wil ik de Disney API gebruiken. Met deze API wil ik een multiplayer-game maken waarin spelers de Disney-personages kunnen raden. Voordat het spel begint, kan de speler een unieke gebruikersnaam aanmaken. Vervolgens worden alle geregistreerde spelers naar een kamer geleid. Als je de kamer binnenkomt, zie je een foto van een Disney-personage en een chatgedeelte. Iedereen typt zijn antwoord in de chat. De speler die het juiste antwoord raadt, krijgt een confetti op zijn scherm en een score. Na de viering. Het spel gaat verder en genereert nog een afbeelding van een personage, enzovoort.
 
 ### API = Disney Api
+In deze API krijg je allerlei informatie over de 
 Hier is de link naar de [documentatie](https://disneyapi.dev/docs/)
 
 
@@ -185,6 +190,9 @@ Hier is de link naar de [documntatie](https://dictionaryapi.dev/).
 Het laatste concept is een app waar mensen gezamenlijk review kan geven over een boek of film.  Dus mensen kunnen een boek/film kiezen die ze willen beoordelen. En daarna in een forum feedback plaatsen.  Ik heb ook een andere idee een soort van live chat te geven waarmee gebruikers commentaren kan plaatsen terwijl ze  live een fragment bekijk. Denk aan facebook live.
 
 ### API - Goodreads API
+Een api die ik hiervoor kan gebruiken is de goodreads api. Hiermee kan je verschillende informatie krijgen over eebn boek. Bijvoorbeeld de titel, auteur, aantal beoordeling enz.
+
+Hier is de ;ink naar de API [documentatie](https://www.goodreads.com/api).
 
 ---
 # Het concept
@@ -261,6 +269,12 @@ Wanneer iedereen in de chat stuurt kunnen ze  normaal naar elkaar berichten stur
 Naast dat je met elkaar berichten kunnen sturen, kun je de definitie van het woord krijgen. Om dit functionaliteit te gebruiken moet je een word in de chat versturen, na enkele seconde komen het definitie van het woord tevoorschijn. Als je het wilt kun je de betekenis  van het woord kopieren.
 
 ![Chat Functionality](readme-images/generate-words.png)
+
+
+### Gebruikers is aan het typen
+Wanneer een  gebruiker aan het typen is, krijgen de rest een bericht dat een specifiek gebruiker aan het typen is. 
+
+![user typing](readme-images/user-typing.png)
 
 ---
 # API

@@ -19,7 +19,7 @@ const userList = document.querySelector('#user-online');
 const usernameInput = document.querySelector('#username-input');
 const userListButton = document.querySelector('.user-btn');
 
-
+const loader = document.querySelector('.loader');
 let currentUser;
 socket.emit('get online users')
 
@@ -50,11 +50,18 @@ createUserBtn.addEventListener('click', (e) => {
         currentUser = username;
         usernameForm.classList.add('hidden');
         chat.classList.remove('hidden');
+      
+      loader.classList.add('loader-screen');
+        setTimeout(() => {
+            loader.classList.remove('loader-screen');
+        }, 2000);
+        
     }
 
     console.log('New user created')
 
 });
+
 
 //Als je op de back button klikt, ga je terug naar de home pagina met de username formulier
 backBtn.addEventListener('click', (e) => {

@@ -351,8 +351,13 @@ figcaption {
     padding: 1em;
     color: var(--white);
     font-weight: bold;
+    transition: .2s ease-in-out;
 }
 
+#submit-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
 /******************/
 /* USER IS TYPING */
 /******************/
@@ -425,6 +430,8 @@ animation: knippereffect 1.2s linear infinite;
 }
 
 #create-user-btn:hover {
+    cursor: pointer;
+    transform: scale(1.1);
     background-color: var(--dark-blue);
 }
 
@@ -469,7 +476,26 @@ animation: knippereffect 1.2s linear infinite;
 }
 
 
+/***********/
+/* LOADING */
+/***********/
+.loader.loader-screen {
+    background: #284f5b;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    animation: fadeOut 1s ease-in-out forwards;
+}
 
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 @media (min-width: 60em) {
 
     /* Username form */
