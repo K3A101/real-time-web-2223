@@ -52,6 +52,7 @@ createUserBtn.addEventListener('click', (e) => {
         chat.classList.remove('hidden');
       
       loader.classList.add('loader-screen');
+    //   Na 2 seconden wordt de loader verwijderd
         setTimeout(() => {
             loader.classList.remove('loader-screen');
         }, 2000);
@@ -161,7 +162,6 @@ function displayData(data) {
 
 }
 
-
 socket.on('wordData', (data) => {
     console.log(data);
     displayData(data)
@@ -169,7 +169,7 @@ socket.on('wordData', (data) => {
     wordsDictionarySection.scrollTop = wordsDictionarySection.scrollHeight;
 
 })
-
+//Alle woord definities naar de server gestuurd om opelsagen te worden 
 socket.on('word description history', wordDescriptionHistory => {
     wordDescriptionHistory.forEach(data => {
         displayData(data);
@@ -197,9 +197,6 @@ function copyText() {
     }
 
 }
-
-// Variabel om het woord definitie te kopieren
-
 
 
 // ----------------- SOCKET REALTIME EVENTS ----------------- //
@@ -279,7 +276,7 @@ socket.on('stop typing', (typingUser) => {
     console.log('User has stopped typing');
 
 })
-
+// Wanneer een gebruiker de chat verlaat, wordt de username uit de userList verwijderd
 socket.on('user has left', (onlineUsers) => {
     userList.innerHTML = '';
     for (username in onlineUsers) {
@@ -306,20 +303,11 @@ function checkSocketConnection() {
     } else {
         console.log('Socket is disconnected');
         networkError.innerHTML = ` 
-        <h2 class="hit-the-floor">404</h2>
+        <h2 class="hit-the-floor">504</h2>
         <p> <b>Your are offline</b> <br> You are offline, please check your internet connection</p>`;
         networkError.classList.add('socket-disconnected');
 
-        setTimeout(() => {
-
-            if (!socket.connected) {
-                const error = document.querySelector('#error');
-                error.innerText = 'You are disconnected';
-                error.classList.add('show');
-
-            }
-
-        }, 5000);
+      
 
     }
 

@@ -21,11 +21,15 @@ Ik heb mijn applicatie gehost op adaptable and railway. Maar railway is stabiele
 - [Het Concept](#het-concept)
 - [Dictionary  generator chat app](#dictionary-generator-chat)
 - [Functionaliteiten](#core-functionaliteiten)
+- [Moscow methode](#moscow-methode)
 - [Hoe gebruik je de App](#hoe-gebruik-je-de-app)
 - [Free Dictionary Api](#free-dictionary-api)
 - [Data Modeling](#data-modeling)
 - [Data Life cycle Diagram](#data-lifecycle-diagram)
 - [Real time Events](#real-time-events)
+- [Ui stack](#ui-stack)
+- [Geen verbinding met de server](#geen-verbinding-met-de-server)
+- [Bronnen](#bronnen)
 ---
 ## Applicatie installatie
 Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen. 
@@ -70,7 +74,7 @@ Als je npm run dev commando uitvoert, kun je de server starter op localhost http
 Om de applicatie live te zetten heb ik adaptable.io hosting platform gebruikt. Ik heb deze gebruikt omdat het ondersteund websocket. Je kan ook andere hosting platform gebruiken zoals railway.
 
 ---
-## Express Server implementeren
+### Express Server implementeren
 Om een express server te implementeren moet je eerst de express module installeren. Dit kan je doen door de volgende commando in je terminal te typen.
 
 ```
@@ -91,7 +95,7 @@ Om de express server te starten moet je de volgende code in je server.js bestand
 
 
 ```
-## Socket.io implementeren
+### Socket.io implementeren
 Om socket.io te implementeren moet je eerst de socket.io module installeren. Dit kan je doen door de volgende commando in je terminal te typen.
 
 	npm install socket.io
@@ -123,7 +127,7 @@ Om de socket.io server te starten moet je de volgende code in je server.js besta
 ```
 </details>
 
-## Nodemon implementeren
+### Nodemon implementeren
 Om nodemon te implementeren moet je eerst de nodemon module installeren. Dit kan je doen door de volgende commando in je terminal te typen.
 
 	npm install nodemon
@@ -196,10 +200,8 @@ Hier is de ;ink naar de API [documentatie](https://www.goodreads.com/api).
 
 ---
 # Het concept
-## Dictionary generator chat
-Dictionary cahat oftewel DictoChat is een chat applicatie waar een groep mensen met elkaar kan praten in een chatroom. Ook knnen ze een betekenis van het woord genereren. 
-
-Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel een beetje aangepast. Wat het inhoudt is dat  groep mensen komen in een chatroom terecht en dan kunnen ze op basis van een woord die ze hebben ingevuld een overzicht maken met woordenboek eigenschappen. In principe is de woordenboek generator een chat waar gebruikers met elkaar kunnen praten maar teglijkertijd de betekenis wan het woord zien. Aan de zijkant staat de gebruikerslijst. In de lijst staan alle gebruikers die aangemeld zijn in de Chat. Verder kunnen anderen zien wie momemnteel online is. 
+## Dictionary generator chat - DictoChat
+Dictionary generator chat oftewel DictoChat is een chat  waarbij  een groep mensen samen een  betekenis van het woord in een group chat genereert. Dus iedereen kan een woord intypen en ze krijgen op basis daarvan verschillende informatie over het woord zoals bij een woordenboek. Soort informatie die je kan zien zijn: hoe je het woord uitspraak, het definitie, en de spelling. 
 
 ## Schetsen
 
@@ -207,7 +209,7 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 ![Idee 2 schets](readme-images/concept-wireflow.jpg)
 
 
-## Core Functionaliteiten 
+## Core Functionaliteiten van DictoChat
 - [x] Gebruikers kunnen gebruikersnaam maken
 - [x] Gerbruikers komen op een gebruikerslijst komen te staan
 - [x] Je kan zien wie online is.
@@ -218,6 +220,7 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 - [x] Kijken wie uit de chat Weggegaan zijn
 - [X] Je kan zien welke gebruiker aan het type is
 
+## MOSCOW methode
 ## Must have
 - [x] Gebruikers kunnen gebruikersnaam maken
 - [x] Gerbruikers komen op een gebruikerslijst komen te staan
@@ -225,9 +228,9 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 - [x] Gebruikers kunnen met elkaar communiceren in een groupchat.
 - [x] Gebruikers kunnen woorden invullen om het definitie te genereren
 - [x] Moet concrete informatie geven van het woord'
-- [ ] Berichten worden opgeslagen
-- [ ] Data life cycle diagram
-- [ ] 
+- [x] Berichten worden opgeslagen
+- [x] Data life cycle diagram
+ 
 
 ## Should have
 - [ ] Instructie hoe je de app gebruikt
@@ -238,7 +241,7 @@ Voor mijn eindopdracht heb ik het woordenboek idee gekozen. Maar het idee is wel
 - [ ] Gebruikers kunnen in room gaan
 - [ ] Gebruikers krijgen notifactie dat iemand is daarbij gekomen
 - [ ] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
-- [ ] Gebruikers kunnen de beschrijving van de woord kopieren met een button 
+- [x] Gebruikers kunnen de beschrijving van de woord kopieren met een button 
 
 ## Would have but not right now
 - [ ] Een melding die aangeeft dat er geen informatie kunnen vinden van het woord.
@@ -398,6 +401,8 @@ Om de response overzicht te krijgen heb ik insomia.rest gebruikt.
 ```
 </details>
 
+Niet alle woorden heeft dezelfde structuur. Hier kon ik de map filter, reduce methode gebruiken. Als ik tijd had, zou ik dit manier proberen. 
+
 ## Hoe werkt de API in de Chat?
 
 ```javascript
@@ -431,9 +436,6 @@ sendMessage.addEventListener('click', (e) => {
     }
 })
 
-
-
-
 ```
 ### Toelichting
 Dit is een click eventlistener op het verstuur button. In deze functie gebeurd er een paar dingen. Ten eerste de ingevulde woord wordt in `word` variabele opgeslagen. De waarde daarvan wordt gestuurd geplaatst in de API URL. Verder wordt de data die uit de API is opgehaald naar de server gestuurd  met de `wordData` event.  In de server wordt de data gestuurd naar alle verbonden client. Terug bij deze functie, de data wordt opgehaald. In dezelfe click event heb ik nog twee socket.io events togevoegd. 
@@ -445,20 +447,30 @@ Dus is het kort, wanneer de gebruiker op de sendMessage button klikt, wordt beri
 ---
 
 ## Data modeling
+Dit is een overzicht, van de API. 
 ### Versie 1
 ![data modeling schets versie 1](readme-images/data-modeling-schets.jpg)
 
-
+---
 
 ## Data Lifecycle Diagram
-### Versie 1
+
+![Data cycle diagram versie 3](readme-images/data-cycle-diagram-v2.png)
+Dit is mijn data life diagram. Hte bestaat uit drie compontenten. De server, de client en de API. In de client wordt de gemaakt gebruikesnaam in de server opgeslagen en via de server wordt het naar alle verbonden client gestuurd. De gebruiker kan een woord invullen en op de verstuur button klikken. De woord wordt naar de API gestuurd en de betekenis  van het woord  wordt terug gestuurd naar de server. De server stuurt de data naar alle verbonden client. Tussen de client en de server verschillende real time events verstuurd en ontvangt. 
+ <details>
+<summary>Oude versies</summary>
+
 ![Data cycle Diagram versie 1](readme-images/data-cycle-diagram-v1.png)
 
 ### Versie 2
 ![Data cycle diagram versie 2](readme-images/data-cycle-diagram-v2.png)
+
+</details>
+
 ---
 # Real time events
 Voor het communicatie tussen de server en de clients.  Heb ik verschillende real time events gemaakt.
+- `connection` Event wordt uitgevoerd wanneer de gebruiker verbinding maakt met de server
 - `new-user` Event wordt uigevoerd Wanneer de gebruiker een nieuwe gebruiker aanmaakt
 - `user joined` Event die aangeeft dat een user is in de chat bijgekomen
 - `get online users` Met deze event worden de aangemelde gebruikers in de server opgeslagen in een lijst komen te staan.
@@ -469,8 +481,40 @@ Voor het communicatie tussen de server en de clients.  Heb ik verschillende real
 - `chat history` Maximaal 50 berichten worden opgeslagen, de nieuwe gebruikers die nog binnen komen kunnen alsnog de oude berichten zien. 
 - `word descripton history` geld ook bij de woord definities, maximaal 50 stukjes worden in de server bewaard. 
 - `connect` De event ga checken of de applicatie verbinding heeft met de server. Als er geen verbinding is word een bericht getsuurd naar de gebruikers dat hij offline is. 
+- `disconnect` Event die aangeeft dat de gebruiker offline is.
 
  ## Real time event 
+<details>
+
+<summary>connection</summary>
+
+### Connection
+
+### Socket event: Connection
+
+Wanneer de gebruiker verbinding maakt met de server, wordt de `connection` event uitgevoerd. De server stuurt een bericht naar de client dat de gebruiker is verbonden met de server.
+
+#### Server
+```javascript
+
+//server
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.emit('connection', 'You are connected to the server');
+
+    // Meerder socket events
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
+});
+
+```
+
+
+</details>
+
+
 <details>
 <summary>new-user</summary>
 
@@ -485,6 +529,7 @@ Wanneer een nieuwe gebruiker in de chat komt wordt de `new user` event gestuurd 
 //client
 const usernameForm = document.querySelector('.username-form');
 const usernameInput = document.querySelector('#username-input');
+const loader = document.querySelector('.loader');
 let currentUser;
 // event wordt verstuurd naar de server
 createUserBtn.addEventListener('click', (e) => {
@@ -498,12 +543,17 @@ createUserBtn.addEventListener('click', (e) => {
         currentUser = username;
         usernameForm.classList.add('hidden');
         chat.classList.remove('hidden');
+      
+      loader.classList.add('loader-screen');
+        setTimeout(() => {
+            loader.classList.remove('loader-screen');
+        }, 2000);
+        
     }
 
     console.log('New user created')
 
 });
-
 //client 
 socket.on('new-user', (username) => {
     console.log(username + ' has joined the chat');
@@ -732,7 +782,7 @@ socket.on('stop typing', (typingUser) => {
 ###  De chat, de core onderdeel van dit applicatie
 
 #### Socket event: chat message
-De chat message event is de basis van de hele applicatie, verschillende gebruikers met elkaar communiceren in chat room. Per bericht kunnen  alle gebruikers zien wie de zender van het bericht is. In het event wordt de berichten en de zender naar de server gestuurd. En via de server wordt het met socket.io verstuurd naar alle gebruikers die in de chat zijn. 
+De chat message event is de basis van de hele applicatie, verschillende gebruikers kunnen met elkaar communiceren in chat room. Per bericht kunnen  alle gebruikers zien wie de zender van het bericht is. In het event wordt de berichten en de zender naar de server gestuurd. En via de server wordt het met socket.io verstuurd naar alle gebruikers die in de chat zijn. 
 
 Wat ik hier doe is ik sla de waarde van wat er ingetypt is op in `word`. Wanneer er er meer dan 1 dingen ingetypt wordt en de gebruiker op de verstuur knop klikt, ga de waarde naar de server toe onder de chat message event. 
 
@@ -1116,22 +1166,16 @@ function checkSocketConnection() {
 
     if (socket.connected) {
         console.log('Socket is connected');
-        chat.classList.remove('socket-disconnected');
+        networkError.classList.remove('socket-disconnected');
 
     } else {
         console.log('Socket is disconnected');
-        chat.classList.add('socket-disconnected');
+        networkError.innerHTML = ` 
+        <h2 class="hit-the-floor">404</h2>
+        <p> <b>Your are offline</b> <br> You are offline, please check your internet connection</p>`;
+        networkError.classList.add('socket-disconnected');
 
-        setTimeout(() => {
-
-            if (!socket.connected) {
-                const error = document.querySelector('#error');
-                error.innerText = 'You are disconnected';
-                error.classList.add('show');
-
-            }
-
-        }, 5000);
+      
 
     }
 
@@ -1159,14 +1203,23 @@ function checkSocketConnection() {
 </details>
 
 
+---
+## UI Stack
+De ui stack is bepaalde states die een applicatie kan hebben. Er zijn 4 states: Empty, Loading, Partial, error en zero state. Voor mijn Chat applicatie heb ik gewerkt aan de error state wanneer de client geen verbinding heeft met de server. En een loading state wannner de gebruiker aan het wachten is om naar de chat room te gaan.
 
 
+### Offline ondersteuning
+Ik heb nagedacht over offline ondersteuning. Ik heb een offline pagina gemaakt. Wanneer de gebruiker offline is, krijgt hij een melding dat hij offline is.
 
- 
+### Client heeft geen verbinding met de server
+![Client heeft geen verbinding met de server](readme-images/no-server-connection.png)
+Dit bericht krijg de gebruiker, wanneer er de client geen verbinding heeft met de server. 
 ---
 
 # Bronnen
-
-
+- [Socket.io](https://socket.io/)
+- [Give user an Identity](https://makeschool.org/mediabook/oa/tutorials/make-chat/join-the-chat/)
+- [Free dictionary API](https://dictionaryapi.dev/)
+---
 ## ⚖ License
 [MIT](https://github.com/K3A101/real-time-web-2223/blob/main/LICENSE) 

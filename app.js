@@ -35,7 +35,7 @@ io.on('connection', (socket) => {
             chatHistory.shift();
         }
         chatHistory.push(chat);
-
+ console.log('chatHistory', chatHistory)
         io.emit('chat message', chat);
         console.log(`${chat.username}: ${chat.message}`);
     })
