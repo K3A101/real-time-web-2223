@@ -1,7 +1,7 @@
 # Real-Time Web 
 
 ## Het Process
-Voor deze cursus moeten we een realtime applicatie  ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Ik heb technieken zoals socket.io gebruik dat ervoor zorgt dat er communicatie is tussen de server en client. Met deze techniek kan ik data real time versturen beide kanten op dezelfde tijd. 
+Voor deze cursus ga ik een realtime chat applicatie  ontwikkelen die in real time data ontvangt en uitdeelt (je kunt de data direct zien). Ik heb technieken zoals socket.io en express.js gebruik voor het communicatie  tussen de server en client. Met deze techniek kan ik data real time versturen aan beide kanten op dezelfde tijd. 
 
 ## Live Demo Links
 <!-- 	Stabiele versie -->
@@ -49,10 +49,10 @@ Om dit applicatie te installeren en gebruiken moet je een paar stappen doorlopen
 - Nodemon
 - Express
 - socket.io 
-- ejs
+- ejs template engine
 
 ### Clone repository
-Om dit project te gebruiken moet je eerst dit repository clonen en in lokaal via een editor toevoegen.
+Om dit project te gebruiken moet je eerst dit repository clonen en  lokaal via een editor toevoegen.
 
     git clone https://github.com/K3A101/css-to-the-rescue-2223.git
 
