@@ -282,14 +282,17 @@ Wanneer een  gebruiker aan het typen is, krijgen de rest een bericht dat een spe
 ---
 # API
 ## Free dictionary API
-Om mijn concept aan de praat te krijgen ga ik de Free API Dictionary Api gebruiken. Hoe de Api werkt is dat het woord die je invult, word dan je endpoint. Verder wordt via de endpoint een array gegeneert met verschillende eigenschappen van het woord. Hieronder is er een voorbeeld van de een woord.
+Om mijn concept aan de praat te krijgen ga ik de Free API Dictionary Api gebruiken. Free dictionary API is een api die je verschillende informatie geeft over een woord. De informatie die je krijgt zijn: de definitie, de spelling, de uitspraak enz. 
+ Hoe de Api werkt is dat het woord die je invult, wordt dan je endpoint. Verder wordt via de endpoint een array gegeneert met verschillende eigenschappen van het woord. Hieronder is er een voorbeeld van de een woord.
 
 ### Eindpont van het woord hello
+Wanneer de gebruiker een woord invult, wordt de woord de endpoint. 
 `GET https://api.dictionaryapi.dev/api/v2/entries/en/hello`
 
 ### De response
 Dit is wat je terugkrijgt vanuit de API. 
-Om de response overzicht te krijgen heb ik insomia.rest gebruikt. 
+Om de response overzicht te krijgen heb ik insomia.rest gebruikt.
+ 
 ![Insomia.rest](readme-images/insomia.rest.png)
 <details>
 <summary> Het structuur van de API</summary>
@@ -455,7 +458,7 @@ Dit is een overzicht, van de API.
 
 ## Data Lifecycle Diagram
 
-![Data cycle diagram versie 3](readme-images/data-cycle-diagram-v2.png)
+![Data cycle diagram versie 3](readme-images/data-cycle-diagram-v4.png)
 Dit is mijn data life diagram. Hte bestaat uit drie compontenten. De server, de client en de API. In de client wordt de gemaakt gebruikesnaam in de server opgeslagen en via de server wordt het naar alle verbonden client gestuurd. De gebruiker kan een woord invullen en op de verstuur button klikken. De woord wordt naar de API gestuurd en de betekenis  van het woord  wordt terug gestuurd naar de server. De server stuurt de data naar alle verbonden client. Tussen de client en de server verschillende real time events verstuurd en ontvangt. 
  <details>
 <summary>Oude versies</summary>
