@@ -413,7 +413,7 @@ Om de response overzicht te krijgen heb ik insomia.rest gebruikt.
 ### Meerde woord definitie in de Api
 
 ## Hoe werkt de API in de Chat?
-Niet alle woorden heeft dezelfde structuur. Hier kon ik de map filter, reduce methode gebruiken. Als ik tijd had, zou ik dit manier proberen. Dus wannneer de gebruiker dezelfde woord generereert, krijgen ze een andere definitie te zien. Ik heb het express zo gelaten om het wat leuker te maken. Maar je kan toch de definities van het woord kopiëren en in de chat plakken.
+Niet alle woorden heeft dezelfde structuur. Hier kon ik de map filter, reduce methode gebruiken. Als ik tijd had, zou ik dit manier proberen. Dus wannneer de gebruiker dezelfde woord genereert, krijgen ze een andere definitie te zien. Ik heb het express zo gelaten om het wat leuker te maken. Maar je kan toch de definities van het woord kopiëren en in de chat plakken.
 
 ```javascript
 sendMessage.addEventListener('click', (e) => {
