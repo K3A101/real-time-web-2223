@@ -70,8 +70,6 @@ backBtn.addEventListener('click', (e) => {
     usernameForm.classList.remove('hidden');
     backBtn.classList.add('hide-back-btn');
     chat.classList.add('hidden');
-    // socket.emit('disconnect');
-    // console.log('User disconnected');
 })
 
 
@@ -95,7 +93,6 @@ sendMessage.addEventListener('click', (e) => {
         // fetch('/new-word' + word)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             socket.emit('wordData', data); //DE data opgehaald van de API wordt gestuurd naar de server
         }).catch(err => {
             console.log(err)
@@ -184,14 +181,14 @@ function copyText() {
     let copiedText
 
     const copyBtns = document.querySelectorAll('.word button.copy-word-btn');
-    console.log("copyBtns", wordsDictionarySection, copyBtns);
+    
 
     for (let i = 0; i < copyBtns.length; i++) {
         copyBtns[i].addEventListener('click', () => {
             navigator.clipboard.writeText(textToCopy[i].innerText);
             copyConfirmations[i].innerText = 'You copied the text!';
             copiedText = textToCopy[i].innerText;
-            console.log(copiedText);
+            console.log('Copied text: ', copiedText);
         })
 
     }
@@ -233,7 +230,6 @@ function addChatMessage(chat) {
 
 // Wanneer een nieuwe gebruiker wordt aangemaakt, wordt de username in de userList geplaatst
 socket.on('new-user', (username) => {
-    console.log(username + ' has joined the chat');
     let user = document.createElement('li');
     user.innerHTML = `${username}`;
     userList.appendChild(user);
@@ -264,8 +260,6 @@ socket.on('typing', (typingUser) => {
     // const typingIndicator = document.createElement('div');
     typingIndicator.innerHTML = `<span>${typingUser}</span> is typing...`;
     console.log(`${typingUser} is typing...`);
-    console.log('User is typing')
-
 
 })
 
@@ -273,8 +267,6 @@ socket.on('typing', (typingUser) => {
 socket.on('stop typing', (typingUser) => {
     typingIndicator.innerHTML = '';
     console.log(`${typingUser} has stopped typing...`);
-    console.log('User has stopped typing');
-
 })
 // Wanneer een gebruiker de chat verlaat, wordt de username uit de userList verwijderd
 socket.on('user has left', (onlineUsers) => {

@@ -49,7 +49,6 @@ io.on('connection', (socket) => {
     socket.on('stop typing', (typingUser) => {
         // io.emit('typing', typingUser);
         socket.broadcast.emit('stop typing', typingUser);
-        console.log(`${typingUser} stopped typing`);
     })
 
 
