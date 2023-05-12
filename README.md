@@ -105,7 +105,7 @@ Om socket.io te implementeren moet je eerst de socket.io module installeren. Dit
 
 	npm install socket.io
 
-Om de socket.io server te starten moet je de volgende code in je server.js bestand typen.
+Om de socket.io server te starten moet je de volgende code in je app.js bestand typen.
 
 <details>
 <summary> De code</summary>
@@ -178,7 +178,7 @@ Hier is de link naar de [documentatie](https://disneyapi.dev/docs/)
 - Disney karakters afbeeldingen worden uit de API gehaald. 
 
 ## Idee 2: Woordenboek generator chat
-Mijn tweede idee is een chat waarbij  een groep mensen samen een  betekenis van het woord in een group chat genereert. Dus Iedereen kan een woord intypen en ze krijgen op basis darvan verschillende informatie over het woord zoals bij een woordenboek. Iedereen kunnen een hun  woordenlijst opstellen, door hun favoriete woorden in een lijstje op te slaan.
+Mijn tweede idee is een chat waarbij  een groep mensen samen een  betekenis van het woord in een groep chat genereert. Dus Iedereen kan een woord intypen en ze krijgen op basis darvan verschillende informatie over het woord zoals bij een woordenboek. Iedereen kunnen een hun  woordenlijst opstellen, door hun favoriete woorden in een lijstje op te slaan.
 
 
 ### API =   Free Dictionary APi
@@ -222,7 +222,6 @@ Dictionary generator chat oftewel DictoChat is een chat  waarbij  een groep mens
 - [x] Gebruikers kunnen woorden invullen om de beschrijving te genereren
 - [x] Moet concrete informatie geven van het woord'
 - [x] Kijken wie er bijgekomen is in de chat
-- [x] Kijken wie uit de chat Weggegaan zijn
 - [X] Je kan zien welke gebruiker aan het type is
 
 ## MOSCOW methode
@@ -241,8 +240,9 @@ Dictionary generator chat oftewel DictoChat is een chat  waarbij  een groep mens
 - [ ] Instructie hoe je de app gebruikt
 - [x] Moet werkend zijn op mobiel
 - [ ] Offline ondersteuning 
-- [ ] 
+
 ## Could have
+- [ ] Gebruikers kunnen een bericht krijgen wanneer een woord niet gevonden kan worden
 - [ ] Gebruikers kunnen in room gaan
 - [ ] Gebruikers krijgen notifactie dat iemand is daarbij gekomen
 - [ ] Gebruikers kunnen hun woorden opslaan in een woordenboeklijst
@@ -449,9 +449,9 @@ sendMessage.addEventListener('click', (e) => {
 ### Toelichting
 Dit is een click eventlistener op het verstuur button. In deze functie gebeurd er een paar dingen. Ten eerste de ingevulde woord wordt in `word` variabele opgeslagen. De waarde daarvan wordt gestuurd geplaatst in de API URL. Verder wordt de data die uit de API is opgehaald naar de server gestuurd  met de `wordData` event.  In de server wordt de data gestuurd naar alle verbonden client. Terug bij deze functie, de data wordt opgehaald. In dezelfe click event heb ik nog twee socket.io events togevoegd. 
 
-In de chat message event worden de bericht die de huidige typt, naar de server getsuurd. De rest van de gebruiker in de chat kunnen dit bericht ook zien. Ook de typt indicatie gaat ook weg.
+In de chat message event worden de bericht die de huidige gebruiker typt, naar de server gestuurd. De rest van de gebruiker in de chat kunnen dit bericht ook zien. Ook de `user is typing` gaat ook weg.
 
-Dus is het kort, wanneer de gebruiker op de sendMessage button klikt, wordt berichten aan elkaar gestuurd, maar ook de betekenis van bepaalde woord wordt opgehaald en naar alle verbonden client gestuurd. Het wordt ook aangeven bij de rest dat de persoon is gestopt met typen. 
+Dus in het kort, wanneer de gebruiker op de` sendMessage` button klikt, wordt berichten aan elkaar gestuurd, maar tegelijkertijd de betekenis van een  woord wordt vanuit de API opgehaald en naar alle verbonden client gestuurd. Het wordt ook aangeven bij de rest dat de persoon is gestopt met typen. 
 
 ---
 
@@ -465,7 +465,7 @@ Dit is een overzicht, van de API.
 ## Data Lifecycle Diagram
 
 ![Data cycle diagram versie 3](readme-images/data-cycle-diagram-v4.png)
-Dit is mijn data life diagram. Hte bestaat uit drie compontenten. De server, de client en de API. In de client wordt de gemaakt gebruikesnaam in de server opgeslagen en via de server wordt het naar alle verbonden client gestuurd. De gebruiker kan een woord invullen en op de verstuur button klikken. De woord wordt naar de API gestuurd en de betekenis  van het woord  wordt terug gestuurd naar de server. De server stuurt de data naar alle verbonden client. Tussen de client en de server verschillende real time events verstuurd en ontvangt. 
+Dit is mijn data life cycle  diagram. Het bestaat uit drie compontenten. De server, de client en de API. In de client wordt de gebruikersnaam gemaakt en  in de server opgeslagen en via de server wordt het naar alle verbonden client gestuurd. De gebruiker kan een woord invullen en op de verstuur knop klikken. Het woord wordt naar de API gestuurd en de betekenis  van het woord  wordt terug gestuurd naar de server. De server stuurt de data naar alle verbonden client. Tussen de client en de server verschillende real time events verstuurd en ontvangt. 
  <details>
 <summary>Oude versies</summary>
 
@@ -486,11 +486,11 @@ Voor het communicatie tussen de server en de clients.  Heb ik verschillende real
 - `typing` Event die laat zien dat een gebruiker aan het typen is.
 - `stop typing` Event wanneer  de gebruiker gestopt is met typen
 - `wordData` Event die de API data wordt naar de server gestuurd om dan naar alle clients te sturen
-- `chat message` Event waar de gebrikers met elkaar berichten kan sturen in een chat room
+- `chat message` Event waar de gebruikers met elkaar berichten kan sturen in een chat room
 - `chat history` Maximaal 50 berichten worden opgeslagen, de nieuwe gebruikers die nog binnen komen kunnen alsnog de oude berichten zien. 
-- `word descripton history` geld ook bij de woord definities, maximaal 50 stukjes worden in de server bewaard. 
-- `connect` De event ga checken of de applicatie verbinding heeft met de server. Als er geen verbinding is word een bericht getsuurd naar de gebruikers dat hij offline is. 
-- `disconnect` Event die aangeeft dat de gebruiker offline is.
+- `word descripton history` geld ook bij het woord definities, maximaal 50 stukjes worden in de server bewaard. 
+- `connect` De event ga checken of de applicatie verbinding heeft met de server. Als er geen verbinding is wordt een bericht getsuurd naar de gebruikers dat hij offline is. 
+- `disconnect` Event die aangeeft dat de client niet meer verbonden is met de server.
 
  ## Real time event 
 <details>
@@ -531,11 +531,12 @@ io.on('connection', (socket) => {
 
 ### Socket event: New user
 Hier ga de gebruiker een gebruikersnaam aanmaken. Wanner ze op de knop klikt, wordt twee events naar de server gestuurd. Met de user joined event wordt het zichtbaar voor de gebruiker wie in de chat is aangekomen. 
-Wanneer een nieuwe gebruiker in de chat komt wordt de `new user` event gestuurd van de client naar de server. De server  luistert naar de `new user` event en als er een nieuwe gebruiker een username geeft, wordt de event naar alle clients gestuurd dat er een gebruiker is erij gekomen.
+Wanneer een nieuwe gebruiker in de chat komt wordt de `new user` event gestuurd van de client naar de server. De server  luistert naar de `new user` event en als er een nieuwe gebruiker een username geeft, wordt de event naar alle clients gestuurd dat er een gebruiker  erij zijn gekomen.
 
 #### Client
 ```javascript
 //client
+const displayedUsername = document.querySelector('.displayed-username');
 const usernameForm = document.querySelector('.username-form');
 const usernameInput = document.querySelector('#username-input');
 const loader = document.querySelector('.loader');
@@ -554,15 +555,18 @@ createUserBtn.addEventListener('click', (e) => {
         chat.classList.remove('hidden');
       
       loader.classList.add('loader-screen');
+    //   Na 2 seconden wordt de loader verwijderd
         setTimeout(() => {
             loader.classList.remove('loader-screen');
         }, 2000);
         
+        displayedUsername.innerHTML = `${username}'s ` + '';
     }
 
     console.log('New user created')
 
 });
+
 //client 
 socket.on('new-user', (username) => {
     console.log(username + ' has joined the chat');
@@ -599,6 +603,7 @@ Dit event wordt uitgevoerd naast de new user event. Wanneer de gebruiker een naa
 
 #### client 
 ```javascript
+const displayedUsername = document.querySelector('.displayed-username');
 const createUserBtn = document.querySelector('#create-user-btn');
 const usernameForm = document.querySelector('.username-form');
 const usernameInput = document.querySelector('#username-input');
@@ -615,17 +620,27 @@ createUserBtn.addEventListener('click', (e) => {
         currentUser = username;
         usernameForm.classList.add('hidden');
         chat.classList.remove('hidden');
+      
+      loader.classList.add('loader-screen');
+    //   Na 2 seconden wordt de loader verwijderd
+        setTimeout(() => {
+            loader.classList.remove('loader-screen');
+        }, 2000);
+        
+        displayedUsername.innerHTML = `${username}'s ` + '';
     }
 
     console.log('New user created')
 
 });
 
+
 socket.on('user joined', (username) => {
     console.log(username + ' has joined the chat');
     let user = document.createElement('li');
     user.innerHTML = `${username} has joined the chat`;
     chatContainer.appendChild(user);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 });
 
 
@@ -651,7 +666,7 @@ socket.on('user joined', (username) => {
 ### Lijst met alle online gebruikers
 
 #### Socket event: get online users
-De gebruikers met een naam worden dan opgeslagen naar de server onder de get online event. De Opgeslagen gebruikersnamen worden vanuit de server opgehaald en naar de client toegestuurd. Dus wanneer de gebruiker naar de homepagina komt, kunnen ze alle online gebruikers zien die momenteel in de chat zijn. 
+De gebruikers met een naam worden dan opgeslagen naar de server onder de get online users event. De Opgeslagen gebruikersnamen worden vanuit de server opgehaald en naar de client gestuurd. Dus wanneer de gebruiker naar de homepagina komt, kunnen ze alle online gebruikers zien die momenteel in de chat zijn. 
 
 #### client
 ```javascript
@@ -689,7 +704,7 @@ socket.emit('get online users', onlineUsers);
 ### Gebruiker is aan het typen
 
 #### Socket event: typing
-Dit is een event die aangeeft welke gebruiker een bericht aan het typen is. Ik heb een variabele `typingUser`gemaakt dat de huidige client dus mijn client opslaan. Dus de aangemaakte gebruikersnaam wordt gekoppeld met nieuwe variabele. Dus wanneer de gebruiker begint met typen wordt de typing event getriggerd en naar de server gestuurd. In de server word de typing event gestuurd naar alle gebruikers behalve degene die aan het typen is. 
+Dit is een event die aangeeft welke gebruiker een bericht aan het typen is. Ik heb een variabele `typingUser`gemaakt dat de huidige client dus mijn eigen client opslaan. Dus de aangemaakte gebruikersnaam wordt gekoppeld met nieuwe variabele. Dus wanneer de gebruiker begint met typen wordt de typing event getriggerd en naar de server gestuurd. In de server word de typing event gestuurd naar alle gebruikers behalve degene die aan het typen is. 
 
 #### Client
 ```javascript
@@ -791,7 +806,7 @@ socket.on('stop typing', (typingUser) => {
 ###  De chat, de core onderdeel van dit applicatie
 
 #### Socket event: chat message
-De chat message event is de basis van de hele applicatie, verschillende gebruikers kunnen met elkaar communiceren in chat room. Per bericht kunnen  alle gebruikers zien wie de zender van het bericht is. In het event wordt de berichten en de zender naar de server gestuurd. En via de server wordt het met socket.io verstuurd naar alle gebruikers die in de chat zijn. 
+De chat message event is de basis van het hele applicatie, verschillende gebruikers kunnen met elkaar communiceren in een chat kamer. Per bericht kunnen je de zender zien. In het event wordt de berichten en de zender naar de server gestuurd. En via de server wordt het met socket.io verstuurd naar alle gebruikers die in de chat zijn. 
 
 Wat ik hier doe is ik sla de waarde van wat er ingetypt is op in `word`. Wanneer er er meer dan 1 dingen ingetypt wordt en de gebruiker op de verstuur knop klikt, ga de waarde naar de server toe onder de chat message event. 
 
@@ -1121,7 +1136,7 @@ let wordDescriptionHistory = [];
 ### Gebruiker heeft de chat verlaten
 
 #### Socket event: user has left
-Je bent klaar met chatten en je gaat offline. Dan word de disconnect event uit de server uitgevoerd. Wanneer een gebruiker weggaat, wordt alle gebruikers uit de chat weggehaald. Als ik tijd had zou ik alleen de offline gebruiker uit de online lijst. In de chat krijg je een melding welke gebruikers uit de chat zijn gegaan. 
+Je bent klaar met chatten en je gaat offline. Dan word de disconnect event uit de server uitgevoerd. Wanneer een gebruiker weggaat, wordt alle gebruikers uit de chat weggehaald. Als ik tijd had zou ik een functie schrijen waarbij alleen de offline gebruiker vanuit de gebruikerslijst weggehaald wordt.
 
 #### Client
 ```javascript
@@ -1218,7 +1233,7 @@ De ui stack is bepaalde states die een applicatie kan hebben. Er zijn 4 states: 
 
 
 ### Offline ondersteuning
-Ik heb nagedacht over offline ondersteuning. Ik heb een offline pagina gemaakt. Wanneer de gebruiker offline is, krijgt hij een melding dat hij offline is.
+Ik heb nagedacht over offline ondersteuning. Ik heb een offline pagina gemaakt. Wanneer de gebruiker offline is, krijgt hij een melding dat hij offline is. Ik wilde 404 pagina maken, maar 404 is wanneer de pagina niet gevonden is. Dus ik heb code 505 gebruikt. Dit is een server error.
 
 ### Client heeft geen verbinding met de server
 ![Client heeft geen verbinding met de server](readme-images/no-server-connection.png)

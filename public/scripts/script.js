@@ -244,6 +244,7 @@ socket.on('user joined', (username) => {
 user.classList.add('user-joined-message');
     user.innerHTML = `${username} has joined the chat`;
     chatContainer.appendChild(user);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 });
 
 // Met deze event kunnen gebruikers zien wie er online is
