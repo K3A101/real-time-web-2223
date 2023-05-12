@@ -1242,7 +1242,6 @@ Dit bericht krijg de gebruiker, wanneer er de client geen verbinding heeft met d
 
 # Bronnen
 - [Socket.io](https://socket.io/)
-- [Give user an Identity](https://makeschool.org/mediabook/oa/tutorials/make-chat/join-the-chat/)
 - [Free dictionary API](https://dictionaryapi.dev/)
 ---
 ## ⚖ License
