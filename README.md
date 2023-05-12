@@ -410,9 +410,10 @@ Om de response overzicht te krijgen heb ik insomia.rest gebruikt.
 ```
 </details>
 
-Niet alle woorden heeft dezelfde structuur. Hier kon ik de map filter, reduce methode gebruiken. Als ik tijd had, zou ik dit manier proberen. 
+### Meerde woord definitie in de Api
 
 ## Hoe werkt de API in de Chat?
+Niet alle woorden heeft dezelfde structuur. Hier kon ik de map filter, reduce methode gebruiken. Als ik tijd had, zou ik dit manier proberen. Dus wannneer de gebruiker dezelfde woord generereert, krijgen ze een andere definitie te zien. Ik heb het express zo gelaten om het wat leuker te maken. Maar je kan toch de definities van het woord kopiëren en in de chat plakken.
 
 ```javascript
 sendMessage.addEventListener('click', (e) => {
@@ -447,7 +448,7 @@ sendMessage.addEventListener('click', (e) => {
 
 ```
 ### Toelichting
-Dit is een click eventlistener op het verstuur button. In deze functie gebeurd er een paar dingen. Ten eerste de ingevulde woord wordt in `word` variabele opgeslagen. De waarde daarvan wordt gestuurd geplaatst in de API URL. Verder wordt de data die uit de API is opgehaald naar de server gestuurd  met de `wordData` event.  In de server wordt de data gestuurd naar alle verbonden client. Terug bij deze functie, de data wordt opgehaald. In dezelfe click event heb ik nog twee socket.io events togevoegd. 
+Dit is een click eventlistener op het verstuur button. In deze functie gebeurd er een paar dingen. Ten eerste de ingevulde woord wordt in `word` variabele opgeslagen. De waarde daarvan wordt gestuurd geplaatst in de API URL. Verder wordt de data die uit de API is opgehaald naar de server gestuurd  met de `wordData` event.  In de server wordt de data gestuurd naar alle verbonden client. Terug bij deze functie, de data wordt opgehaald. In dezelfe click event heb ik nog twee socket.io events togevoegd.  
 
 In de chat message event worden de bericht die de huidige gebruiker typt, naar de server gestuurd. De rest van de gebruiker in de chat kunnen dit bericht ook zien. Ook de `user is typing` gaat ook weg.
 
