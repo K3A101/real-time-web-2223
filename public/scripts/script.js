@@ -18,6 +18,7 @@ const usernameForm = document.querySelector('.username-form');
 const userList = document.querySelector('#user-online');
 const usernameInput = document.querySelector('#username-input');
 const userListButton = document.querySelector('.user-btn');
+const displayedUsername = document.querySelector('.displayed-username');
 
 const loader = document.querySelector('.loader');
 let currentUser;
@@ -57,6 +58,7 @@ createUserBtn.addEventListener('click', (e) => {
             loader.classList.remove('loader-screen');
         }, 2000);
         
+        displayedUsername.innerHTML = `${username}'s ` + '';
     }
 
     console.log('New user created')

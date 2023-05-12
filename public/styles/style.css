@@ -504,6 +504,10 @@ animation: knippereffect 1.2s linear infinite;
 
     }
 
+        .user-btn {
+            cursor: default;
+        }
+
     #chat-messages {
         height: 80%;
     }

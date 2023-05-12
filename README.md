@@ -9,6 +9,11 @@ Ik heb mijn applicatie gehost op adaptable and railway. Maar railway is stabiele
 - Railway: https://real-time-web-2223-production-287b.up.railway.app/
 - Adaptable: https://realtime-webapp.adaptable.app/
 
+
+## Dictionary generator chat - DictoChat
+Dictionary generator chat oftewel DictoChat is een chat  waarbij  een groep mensen samen een  betekenis van het woord in een group chat genereert. Dus iedereen kan een woord intypen en ze krijgen op basis daarvan verschillende informatie over het woord zoals bij een woordenboek. Soort informatie die je kan zien zijn: hoe je het woord uitspraak, het definitie, en de spelling. 
+
+![Chat Functionality](readme-images/chatting-functionality.png)
 ---
 # Inhoudsopgave
 - [Het Process](#het-process)
@@ -246,6 +251,7 @@ Dictionary generator chat oftewel DictoChat is een chat  waarbij  een groep mens
 ## Would have but not right now
 - [ ] Een melding die aangeeft dat er geen informatie kunnen vinden van het woord.
 - [ ] Aangeven hoelaat de berichten zijn gestuurd.
+- [ ] Eigen gegenereerde gebruiker wordt opvallender dan de rest. Dan kunnen ze zie van wie wat is.
 
 ## Technieken
 - [x] De gebruikersnaam pagina verbergen wanneer de gebruiker op de button klikt
